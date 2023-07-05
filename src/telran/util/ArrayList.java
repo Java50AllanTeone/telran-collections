@@ -63,31 +63,8 @@ public class ArrayList<T> implements List<T>, Iterable<T> {
 		return oldSize < size;
 	}
 
-	@Override
-	public boolean remove(Object pattern) {
-		var index = indexOf(pattern);
 
-		try {
-			remove(index);
-		} catch (Exception e) {
-			return false;
-		}
-		return true;
-	}
-
-	@Override
-	public boolean removeIf(Predicate<T> predicate) {
-		int oldSize = size;
-		var it = iterator();
-
-		while (it.hasNext()) {
-			T next = it.next();
-			if (predicate.test(next)) {
-				it.remove();
-			}
-		}
-		return oldSize > size;
-	}
+	
 
 	@Override
 	public boolean removeAll(Collection<T> collection) {
@@ -139,20 +116,7 @@ public class ArrayList<T> implements List<T>, Iterable<T> {
 		return size;
 	}
 
-	@Override
-	public T[] toArray(T[] ar) {
-		T[] res = ar.length < size ? Arrays.copyOf(ar, size) : ar;
-		int index = 0;
-
-		for (T obj : this) {
-			res[index++] = obj;
-		}
-
-		if (res.length > size) {
-			res[size] = null;
-		}
-		return res;
-	}
+	
 
 	@Override
 	public Object[] toArray() {
@@ -166,10 +130,11 @@ public class ArrayList<T> implements List<T>, Iterable<T> {
 
 
 	//List Methods
+	@SuppressWarnings("unchecked")
 	@Override
 	public int indexOf(Object pattern) {
 		for (int i = 0; i < size; i++) {
-			if (Objects.equals(pattern, array[i])) {
+			if (Objects.equals((T)pattern, array[i])) {
 				return i;
 			}
 		}
