@@ -77,5 +77,15 @@ class ArrayListTest {
 		
 		assertEquals(exp.toString(), src.toString());
 	}
+	
+	
+	@Override
+	protected Collection<Integer> getCollection(Integer[] ar1) {
+		ArrayList<Integer> arrayList	 = new ArrayList<>();
+		for (Integer num : ar1) {
+			arrayList.add(num);
+		}
+		return arrayList;
+	}
 
 }

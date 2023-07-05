@@ -2,6 +2,8 @@ package telran.tests;
 
 import static org.junit.jupiter.api.Assertions.*;
 
+import java.util.Arrays;
+
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
@@ -61,7 +63,39 @@ abstract class CWCollectionTest {
 	}
 	
 	@Test
-	void toArrayTest
+	void toArrayTest() {
+		Integer[] ar = new Integer[1000];
+		Arrays.fill(ar, 10);
+		Integer[] actual = collection.toArray(ar);
+		assertTrue(ar == actual);
+		assertNull(ar[collection.size()]);
+		assertEquals(numbers, Arrays.copyOf(ar, collection.size()));
+	}
+	
+	@Test
+	void removeIfTest() {
+		Integer[] expected = {10, -20, 8, 14, 30, 12, 100};
+		assertTrue(collection.removeIf(num -> num >= 30));
+		assertArrayEquals(expected, collection.toArray(new Integer[0]));
+	}
+	
+	@Test
+	void addAllTest() {
+		Integer[] ar = {1, 11};
+		Integer[] expected = {10, -20, 8, 14, 30, 12, 100, 1, 11};
+		assertTrue(collection.addAll(getCollection(ar)));
+		assertArrayEquals(expected, collection.toArray(new Integer[0]));
+	}
+	
+	@Test
+	void removeAllTest() {
+		Integer[] ar1 = {10, -20, 1000};
+		Collection<Integer> col1 = getCollection(ar1);
+		Integer[] expected = {8, 14, 30, 12, 100};
+		assertTrue(collection.removeAll(col1));
+		assertFalse(collection.removeAll(col1));
+		assertArrayEquals(expected, collection.toArray(new Integer[0]));
+	}
 
 	protected abstract Collection<Integer> getCollection(Integer[] ar);
 

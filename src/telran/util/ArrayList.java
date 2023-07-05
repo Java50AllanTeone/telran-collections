@@ -53,26 +53,6 @@ public class ArrayList<T> implements List<T>, Iterable<T> {
 		return true;
 	}
 
-	
-	
-
-	@Override
-	public boolean retainAll(Collection<T> c) {
-		int oldSize = size;
-
-		removeIf(e -> !c.contains(e));
-		return oldSize > size;
-	}
-
-	@Override
-	public boolean isEmpty() {
-		return size == 0;
-	}
-
-
-
-
-
 	@Override
 	public void ensureCapacity(int capacity) {
 		if (array.length < capacity)
@@ -88,8 +68,6 @@ public class ArrayList<T> implements List<T>, Iterable<T> {
 	public int size() {
 		return size;
 	}
-
-	
 
 	@Override
 	public Object[] toArray() {
@@ -203,14 +181,14 @@ public class ArrayList<T> implements List<T>, Iterable<T> {
 
 	@Override
 	public boolean addAll(int index, Collection<T> collection) {
-		int oldSize = size;
+		int oldSize = size();
 
 		indexValidation(index, true);
 
 		for (T e : collection) {
 			add(index++, e);
 		}
-		return oldSize < size;
+		return oldSize < size();
 	}
 
 

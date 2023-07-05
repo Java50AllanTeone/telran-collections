@@ -7,8 +7,6 @@ import java.util.function.Predicate;
 public interface Collection<T> extends Iterable<T> {
 	boolean add(T obj);
 	boolean remove(Object pattern);
-	boolean retainAll(Collection<T> c);
-	boolean isEmpty();
 	boolean contains(Object o);
 	void ensureCapacity(int capacity);
 	void trimToSize();
@@ -66,6 +64,13 @@ public interface Collection<T> extends Iterable<T> {
 		removeIf(n -> true);
 	}
 	
+	default boolean retainAll(Collection<T> c) {
+		int oldSize = size();
+
+		removeIf(e -> !c.contains(e));
+		return oldSize > size();
+	}
+	
 	default boolean containsAll(Collection<T> collection) {
 		boolean res = true;
 		Iterator<T> it = collection.iterator();
@@ -76,4 +81,14 @@ public interface Collection<T> extends Iterable<T> {
 		}
 		return res;
 	}
+	
+	default boolean isEmpty() {
+		return size() == 0;
+	}
+	
+	
+	
+
+	
+	
 }
