@@ -1,17 +1,15 @@
 package telran.util;
 
 import java.util.Arrays;
+import java.util.Iterator;
 import java.util.function.Predicate;
 
 public interface Collection<T> extends Iterable<T> {
 	boolean add(T obj);
-	boolean addAll(Collection<T> collection);
 	boolean remove(Object pattern);
-	boolean removeAll(Collection<T> collection);
 	boolean retainAll(Collection<T> c);
 	boolean isEmpty();
 	boolean contains(Object o);
-	void clear();
 	void ensureCapacity(int capacity);
 	void trimToSize();
 	int size();
@@ -19,7 +17,7 @@ public interface Collection<T> extends Iterable<T> {
 	
 	
 
-	default public T[] toArray(T[] ar) {
+	default T[] toArray(T[] ar) {
 		int size = size();
 		T[] res = ar.length < size ? Arrays.copyOf(ar, size) : ar;
 		int index = 0;
@@ -33,7 +31,7 @@ public interface Collection<T> extends Iterable<T> {
 		return res;
 	}
 	
-	default public boolean removeIf(Predicate<T> predicate) {
+	default boolean removeIf(Predicate<T> predicate) {
 		int oldSize = size();
 		var it = iterator();
 
@@ -44,5 +42,38 @@ public interface Collection<T> extends Iterable<T> {
 			}
 		}
 		return oldSize > size();
+	}
+	
+	default boolean addAll(Collection<T> collection) {
+		int oldSize = size();
+
+		for (T e : collection) {
+			this.add(e);
+		}
+		return oldSize < size();
+	}
+	
+	default boolean removeAll(Collection<T> collection) {
+		int oldSize = size();
+
+		for (T e : collection) {
+			this.remove(e);
+		}
+		return oldSize > size();
+	}
+	
+	default void clear() {
+		removeIf(n -> true);
+	}
+	
+	default boolean containsAll(Collection<T> collection) {
+		boolean res = true;
+		Iterator<T> it = collection.iterator();
+		
+		while (it.hasNext() && res) {
+			T obj = it.next();
+			res = contains(obj);
+		}
+		return res;
 	}
 }

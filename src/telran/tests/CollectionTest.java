@@ -26,11 +26,11 @@ class CollectionTest {
 		assertTrue(src.add(6));
 		assertEquals(exp, src);
 		assertEquals(exp.size(), src.size());
-		assertEquals(exp.getLength(), src.getLength());
+		assertEquals(exp.getCapacity(), src.getCapacity());
 		
 		int size = src.size();
 		src.add(7);
-		assertEquals((size * 3) / 2 + 1, src.getLength());
+		assertEquals((size * 3) / 2 + 1, src.getCapacity());
 	}
 	
 
@@ -42,7 +42,7 @@ class CollectionTest {
 		
 		assertEquals(exp, src);
 		assertEquals(exp.size(), src.size());
-		assertEquals(exp.getLength(), src.getLength());
+		assertEquals(exp.getCapacity(), src.getCapacity());
 	}
 	
 	
@@ -79,7 +79,7 @@ class CollectionTest {
 		assertTrue(src.removeIf(e -> e == 5));
 		
 		assertEquals(4, src.size());
-		assertEquals(6, src.getLength());
+		assertEquals(6, src.getCapacity());
 		
 		var exp = new Object[]{1, 2, 3, 4};
 		assertArrayEquals(exp, src.toArray());
@@ -159,13 +159,13 @@ class CollectionTest {
 	
 	@Test
 	void ensureCapacityTest() {
-		assertEquals(6, src.getLength());
+		assertEquals(6, src.getCapacity());
 		src.ensureCapacity(6);
-		assertEquals(6, src.getLength());
+		assertEquals(6, src.getCapacity());
 		src.ensureCapacity(7);
-		assertEquals(7, src.getLength());
+		assertEquals(7, src.getCapacity());
 		src.ensureCapacity(100);
-		assertEquals(100, src.getLength());
+		assertEquals(100, src.getCapacity());
 	}
 	
 	@Test
@@ -176,7 +176,7 @@ class CollectionTest {
 		assertFalse(src.retainAll(retain));
 		assertEquals(retain, src);
 		assertEquals(retain.size(), src.size());
-		assertEquals(retain.getLength(), src.getLength());
+		assertEquals(retain.getCapacity(), src.getCapacity());
 		assertArrayEquals(retain.toArray(), src.toArray());
 	}
 	
@@ -185,9 +185,9 @@ class CollectionTest {
 		var arr = src.toArray();
 		var size = src.size();
 		
-		assertNotEquals(size, src.getLength());
+		assertNotEquals(size, src.getCapacity());
 		src.trimToSize();
-		assertEquals(src.size(), src.getLength());
+		assertEquals(src.size(), src.getCapacity());
 		assertEquals(size, src.size());
 		assertArrayEquals(arr, src.toArray());
 	}

@@ -27,4 +27,10 @@ public interface List<T> extends Collection<T> {
 		}
 		return true;
 	}
+	
+	default public boolean contains(Object o) {
+		return indexOf(o) >= 0;
+	}
+	
+	
 }
