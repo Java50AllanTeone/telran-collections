@@ -7,67 +7,79 @@ import org.junit.jupiter.api.Test;
 
 import telran.util.ArrayList;
 
-class ArrayListTest {
-	ArrayList<Integer> src;
+class ArrayListTest extends ListTest {
 	ArrayList<Integer> exp;
 
 	@BeforeEach
+	@Override
 	void init() {
-		src = new ArrayList<>(new Integer[]{1, 2, 3, 4, 5}, 6);
+		collection = new ArrayList<>(6);
+		super.init();
 	}
 
 	@Test
+	void addTest() {
+		exp = new ArrayList<>(new Integer[]{1, 2, 3, 4, 5, 6}, 6);
+		assertTrue(collection.add(6));
+		assertEquals(exp, collection);
+		assertEquals(exp.size(), collection.size());
+		assertEquals(exp.getCapacity(), collection.getCapacity());
+		
+		int size = collection.size();
+		collection.add(7);
+		assertEquals((size * 3) / 2 + 1, collection.getCapacity());
+	}
+	
+	@Test
 	void constructorsTest() {
-		src = new ArrayList<>();
-		exp = new ArrayList<>(16, 1);
-		assertEquals(exp, src);
+		collection = new ArrayList<>();
+		exp = new ArrayList<>(16);
+		assertEquals(exp, collection);
 		
-		src = new ArrayList<>(exp);
-		assertEquals(exp, src);
+		collection = new ArrayList<>(exp);
+		assertEquals(exp, collection);
 		
-		src = new ArrayList<>(new ArrayList<>(new Integer[]{1, 2, 3, 4, 5}, 6));
+		collection = new ArrayList<>(new ArrayList<>(new Integer[]{1, 2, 3, 4, 5}, 6));
 		exp = new ArrayList<>(new Integer[]{1, 2, 3, 4, 5}, 16);
-		assertEquals(exp, src);
+		assertEquals(exp, collection);
 	}
 	
 	@Test
 	void cloneTest() {
-		var copy = src.clone();
+		var al = new ArrayList<>(collection);
+		var copy = al.clone();
 		
-		assertFalse(src == copy);
-		assertEquals(src, copy);
+		assertFalse(collection == al);
+		assertEquals(collection, al);
 	}
 	
 	
 	@Test
 	void replaceAllTest() {
 		exp = new ArrayList<>(new Integer[]{1, 2, 3, 4, 5}, 6);
-		src.replaceAll(e -> e);
-		assertEquals(exp, src);
+		var al = new ArrayList<>(collection);
+		al.replaceAll(e -> e);
+		assertEquals(exp, collection);
 		
 		exp = new ArrayList<>(new Integer[]{2, 3, 4, 5, 6}, 6);
-		src.replaceAll(e -> e + 1);
-		assertEquals(exp, src);
+		al.replaceAll(e -> e + 1);
+		assertEquals(exp, al);
 	}
 	
 	@Test
 	void equalsTest() {
-		exp = src;
-		assertTrue(src.equals(exp));
+		exp = (ArrayList<Integer>) collection;
+		assertTrue(collection.equals(exp));
 		
 		exp = null;
-		assertFalse(src.equals(exp));
+		assertFalse(collection.equals(exp));
 		
 		var exp1 = "str";
-		assertFalse(src.equals(exp1));
+		assertFalse(collection.equals(exp1));
 		
 		exp = new ArrayList<>(new Integer[]{1, 2, 3, 4, 5}, 6);
-		exp.setLoadFactor(0.5);
-		assertFalse(src.equals(exp));
-		
-		exp = new ArrayList<>(new Integer[]{1, 2, 3, 4, 5}, 6);
-		src.add(6);
-		assertFalse(src.equals(exp));
+		collection.add(6);
+		assertFalse(collection.equals(exp));
 	}
 	
 	
@@ -75,17 +87,17 @@ class ArrayListTest {
 	void toStringTest() {
 		exp = new ArrayList<>(new Integer[]{1, 2, 3, 4, 5}, 6);
 		
-		assertEquals(exp.toString(), src.toString());
+		assertEquals(exp.toString(), collection.toString());
 	}
 	
 	
-	@Override
+	/*@Override
 	protected Collection<Integer> getCollection(Integer[] ar1) {
 		ArrayList<Integer> arrayList	 = new ArrayList<>();
 		for (Integer num : ar1) {
 			arrayList.add(num);
 		}
 		return arrayList;
-	}
+	}*/
 
 }

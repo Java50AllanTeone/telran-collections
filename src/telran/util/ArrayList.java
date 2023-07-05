@@ -10,21 +10,18 @@ import java.util.function.UnaryOperator;
 
 public class ArrayList<T> implements List<T>, Iterable<T> {
 	private static final int DEFAULT_CAPACITY = 16;
-	private static final double DEFAULT_LOAD = 1;
 	T[] array;
 	private int size = 0;
-	private double loadFactor;
 
 
 	//constructors
 	@SuppressWarnings("unchecked")
-	public ArrayList(int capacity, double loadFactor) {
+	public ArrayList(int capacity) {
 		this.array = (T[]) new Object[capacity];
-		this.loadFactor = loadFactor;
 	}
 	
 	public ArrayList() {
-		this(DEFAULT_CAPACITY, DEFAULT_LOAD);
+		this(DEFAULT_CAPACITY);
 	}
 
 	public ArrayList(Collection<T> collection) {
@@ -33,12 +30,12 @@ public class ArrayList<T> implements List<T>, Iterable<T> {
 	}
 	
 	public ArrayList(T[] array) {
-		this(array.length, DEFAULT_LOAD);
+		this(array.length);
 		addAll(array);
 	}
 	
 	public ArrayList(T[] array, int capacity) {
-		this(capacity, DEFAULT_LOAD);
+		this(capacity);
 		addAll(array);
 	}
 
@@ -46,7 +43,7 @@ public class ArrayList<T> implements List<T>, Iterable<T> {
 	//Collection methods
 	@Override
 	public boolean add(T obj) {
-		if (size >= array.length * loadFactor) {
+		if (size >= array.length) {
 			reallocate((array.length * 3) / 2 + 1);
 		}
 		array[size++] = obj;
@@ -69,6 +66,10 @@ public class ArrayList<T> implements List<T>, Iterable<T> {
 		return size;
 	}
 
+	public int getCapacity() {
+		return array.length;
+	}
+	
 	@Override
 	public Object[] toArray() {
 		Object[] res = new Object[size];
@@ -80,7 +81,6 @@ public class ArrayList<T> implements List<T>, Iterable<T> {
 	}
 
 
-	//List Methods
 	@SuppressWarnings("unchecked")
 	@Override
 	public int indexOf(Object pattern) {
@@ -141,7 +141,7 @@ public class ArrayList<T> implements List<T>, Iterable<T> {
 	public void add(int index, T object) {
 		indexValidation(index, true);
 		
-		if (size >= array.length * loadFactor) {
+		if (size >= array.length) {
 			reallocate((array.length * 3) / 2 + 1);
 		}
 		
@@ -191,8 +191,6 @@ public class ArrayList<T> implements List<T>, Iterable<T> {
 		return oldSize < size();
 	}
 
-
-	//Iterable
 	@Override
 	public Iterator<T> iterator() {
 		return new Iterator<T>() {
@@ -200,7 +198,7 @@ public class ArrayList<T> implements List<T>, Iterable<T> {
 			boolean flNext = false;
 
 			public boolean hasNext() {
-				return current < size;
+				return current < size();
 			}
 
 			public T next() {
@@ -221,7 +219,6 @@ public class ArrayList<T> implements List<T>, Iterable<T> {
 		};
 	}
 
-	//ArrayList methods
 	public boolean addAll(T[] array) {
 		int oldSize = size;
 		
@@ -250,15 +247,14 @@ public class ArrayList<T> implements List<T>, Iterable<T> {
 		if (getClass() != obj.getClass())
 			return false;
 		ArrayList<T> other = (ArrayList<T>) obj;
-		return Double.doubleToLongBits(loadFactor) == Double.doubleToLongBits(other.loadFactor)
-				&& size == other.size
+		return size == other.size
 				//copyOf for test
 				&&  Arrays.deepEquals(Arrays.copyOf(array, size), Arrays.copyOf(other.array, size));
 	}
 
 	@Override
 	public String toString() {
-		return "[" + Arrays.toString(array) + ", size=" + size + ", loadFactor=" + loadFactor + "]";
+		return "[" + Arrays.toString(array) + ", size=" + size + "]";
 	}
 
 
@@ -277,23 +273,18 @@ public class ArrayList<T> implements List<T>, Iterable<T> {
 		}
 	}
 	
-	private void clearRange(int from, int to) {	
-		for (int i = from; i < to; i++) {
-			array[i] = null;
-		}
-	}
+//	private void clearRange(int from, int to) {	
+//		for (int i = from; i < to; i++) {
+//			array[i] = null;
+//		}
+//	}
 	
 	
 	//util test only methods
-	public int getCapacity() {
-		return array.length;
-	}
+
 	
 	public void setSize(int size) {
 		this.size = size;
 	}
-	
-	public void setLoadFactor(double load) {
-		this.loadFactor = load;
-	}
+
 }

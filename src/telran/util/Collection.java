@@ -11,6 +11,7 @@ public interface Collection<T> extends Iterable<T> {
 	void ensureCapacity(int capacity);
 	void trimToSize();
 	int size();
+	int getCapacity();
 	Object[] toArray();
 	
 	
