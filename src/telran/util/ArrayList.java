@@ -40,7 +40,7 @@ public class ArrayList<T> implements List<T>, Iterable<T> {
 	}
 
 
-	//Collection methods
+
 	@Override
 	public boolean add(T obj) {
 		if (size >= array.length) {
@@ -79,7 +79,6 @@ public class ArrayList<T> implements List<T>, Iterable<T> {
 		}
 		return res;
 	}
-
 
 	@SuppressWarnings("unchecked")
 	@Override
@@ -257,9 +256,28 @@ public class ArrayList<T> implements List<T>, Iterable<T> {
 		return "[" + Arrays.toString(array) + ", size=" + size + "]";
 	}
 
-
+	@Override
+	public boolean removeIf(Predicate<T> predicate) {
+		var oldSize = size;
+		var res = Arrays.copyOf(array, array.length);
+		size = 0;
+		
+		for (int i = 0; i < oldSize; i++) {
+			if (!predicate.test(array[i])) {
+				res[size++] = array[i];
+			}
+		}
+		array = res;
+		return oldSize > size;
+	}
 	
 
+	
+	
+	
+	
+	
+	
 	//inner methods
 	private void reallocate(int capacity) {
 		array = Arrays.copyOf(array, capacity);
@@ -272,14 +290,6 @@ public class ArrayList<T> implements List<T>, Iterable<T> {
 			throw new IndexOutOfBoundsException(index);
 		}
 	}
-	
-//	private void clearRange(int from, int to) {	
-//		for (int i = from; i < to; i++) {
-//			array[i] = null;
-//		}
-//	}
-	
-	
 	//util test only methods
 
 	

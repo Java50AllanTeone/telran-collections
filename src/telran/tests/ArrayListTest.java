@@ -6,15 +6,17 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import telran.util.ArrayList;
+import telran.util.List;
 
 class ArrayListTest extends ListTest {
-	ArrayList<Integer> exp;
+	ArrayList<Integer> al;
 
 	@BeforeEach
 	@Override
 	void init() {
 		collection = new ArrayList<>(6);
 		super.init();
+		al = (ArrayList<Integer>) collection;
 	}
 
 	@Test
@@ -46,11 +48,10 @@ class ArrayListTest extends ListTest {
 	
 	@Test
 	void cloneTest() {
-		var al = new ArrayList<>(collection);
 		var copy = al.clone();
 		
-		assertFalse(collection == al);
-		assertEquals(collection, al);
+		assertFalse(copy == al);
+		assertEquals(copy, al);
 	}
 	
 	

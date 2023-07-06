@@ -166,7 +166,6 @@ abstract class CollectionTest {
 	@Test
 	void retainAllTest() {
 		var retain = new ArrayList<>(new Integer[]{1, 2, 3}, 6);
-		
 		assertTrue(collection.retainAll(retain));
 		assertFalse(collection.retainAll(retain));
 		assertEquals(retain, collection);
