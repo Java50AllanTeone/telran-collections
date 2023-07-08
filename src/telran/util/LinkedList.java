@@ -5,13 +5,29 @@ import java.util.Iterator;
 import java.util.function.Predicate;
 
 public class LinkedList<T> implements List<T> {
+	Node<T> head;
+	Node<T> tail;
+	int size;
+	
+	private static class Node<T> {
+		T obj;
+		Node<T> next;
+		Node<T> prev;
+		
+		Node(T obj) {
+			this.obj = obj;
+		}
+	}
 
 	@Override
 	public boolean add(T obj) {
-		// TODO Auto-generated method stub
-		return false;
+		Node<T> node = new Node<>(obj);
+		addNode(size, node);
+
+		return true;
 	}
 
+	
 	@Override
 	public void ensureCapacity(int capacity) {
 		// TODO Auto-generated method stub
@@ -74,8 +90,9 @@ public class LinkedList<T> implements List<T> {
 
 	@Override
 	public void add(int index, T object) {
-		// TODO Auto-generated method stub
-
+		indexValidation(index, true);
+		Node<T> node = new Node<>(object);
+		addNode(index, node);
 	}
 
 	@Override
@@ -92,9 +109,11 @@ public class LinkedList<T> implements List<T> {
 
 	@Override
 	public T get(int index) {
-		// TODO Auto-generated method stub
-		return null;
+		indexValidation(index, false);
+		Node<T> node = getNode(index);
+		return node.obj;
 	}
+
 
 	@Override
 	public T remove(int index) {
@@ -107,5 +126,67 @@ public class LinkedList<T> implements List<T> {
 		// TODO Auto-generated method stub
 		return false;
 	}
+	
+	
+	private Node<T> getNode(int index) {
+		return index < size / 2 ? getNodeFromHead(index) : getNodeFromTail(index);
+	}
+
+	private Node<T> getNodeFromTail(int index) {
+		Node<T> current = tail;
+		for (int i = size - 1; i >= index; i--) {
+			current = current.prev;
+		}
+		return current;
+	}
+
+	private Node<T> getNodeFromHead(int index) {
+		Node<T> current = head;
+		for (int i = 0; i < index; i++) {
+			current = current.next;
+		}
+		return current;
+	}
+	
+	private void addNode(int index, Node<T> node) {
+		
+		if (index == size) {
+			addTail(node);
+		} else if (index == 0) {
+			addHead(node);
+		} else {
+			addMiddle(index, node);
+		}
+		size++;
+	}
+
+
+	private void addMiddle(int index, Node<T> node) {
+		Node<T> nextNode = getNode(index);
+		Node<T> prevNode = nextNode.prev;
+		prevNode.next = node;
+		node.prev = prevNode;
+		nextNode.prev = node;
+		node.next = nextNode;
+	}
+
+
+	private void addHead(Node<T> node) {
+		node.next = head;
+		head.prev = node;
+		head = node;	
+	}
+
+
+	private void addTail(Node<T> node) {
+		if (tail == null) {
+			head = tail = node;
+		} else {
+			tail.next = node;
+			node.prev = tail;
+			tail = node;
+		}
+	}
+
 
 }

@@ -283,13 +283,6 @@ public class ArrayList<T> implements List<T>, Iterable<T> {
 		array = Arrays.copyOf(array, capacity);
 	}
 
-	private void indexValidation(int index, boolean sizeInclusive) {
-		int bounder = sizeInclusive ? size : size - 1;
-		
-		if (index < 0 || index > bounder) {
-			throw new IndexOutOfBoundsException(index);
-		}
-	}
 	//util test only methods
 
 	
