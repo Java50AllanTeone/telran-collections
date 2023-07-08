@@ -18,16 +18,30 @@ class Tests {
 	}
 
 	@Test
-	void testRateLocal() {
-		for (int i = 0; i < 1_000; i++) {
-			lt.rateCombination(choise);
+	void testRateInner() {
+		for (int i = 0; i < 100_000_000; i++) {
+			lt.rateCombinationInner(choise);
 		}
 	}
 	
+	@Test
+	void testRateOuter() {
+		for (int i = 0; i < 100_000_000; i++) {
+			lt.rateCombinationOuter(choise);
+		}
+	}
 	
-	void testRate1() {
-		for (int i = 0; i < 1_000; i++) {
-			lt.rateCombination1(choise);
+	@Test
+	void testRateSetInner() {
+		for (int i = 0; i < 100_000_000; i++) {
+			lt.rateCombinationSetInner(choise);
+		}
+	}
+	
+	@Test
+	void testRateSetOuter() {
+		for (int i = 0; i < 100_000_000; i++) {
+			lt.rateCombinationSetOuter(choise);
 		}
 	}
 
