@@ -19,19 +19,26 @@ class Tests {
 
 	@Test
 	void testRateInner() {
-		for (int i = 0; i < 100_000_000; i++) {
+		for (int i = 0; i < 1000_000_000; i++) {
 			lt.rateCombinationInner(choise);
 		}
 	}
 	
 	@Test
 	void testRateOuter() {
-		for (int i = 0; i < 100_000_000; i++) {
+		for (int i = 0; i < 1000_000_000; i++) {
 			lt.rateCombinationOuter(choise);
 		}
 	}
 	
 	@Test
+	void testRateNext() {
+		for (int i = 0; i < 1000_000_000; i++) {
+			lt.rateCombinationLoop(choise);
+		}
+	}
+	
+	/*@Test
 	void testRateSetInner() {
 		for (int i = 0; i < 100_000_000; i++) {
 			lt.rateCombinationSetInner(choise);
@@ -43,6 +50,6 @@ class Tests {
 		for (int i = 0; i < 100_000_000; i++) {
 			lt.rateCombinationSetOuter(choise);
 		}
-	}
+	}*/
 
 }
