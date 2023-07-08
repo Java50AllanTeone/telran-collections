@@ -8,6 +8,7 @@ import java.util.HashSet;
 public class Lottery {
 	private final int[] WINNING_RANGE = {1, 49};
 	private final int[] WINNING_COMBINATION;
+	int[] vTable = new int[WINNING_RANGE[1] + 1];
 
 		public Lottery(int[] winningCombination) {
 			this.WINNING_COMBINATION = winningCombination;
@@ -16,6 +17,18 @@ public class Lottery {
 
 		public int rateCombination(int playerCombination[]) {
 			int[] vTable = new int[WINNING_RANGE[1] + 1];
+			int count = 0;
+			
+			for (int i = 0; i < playerCombination.length; i++) {	
+				count += vTable[playerCombination[i]];
+				vTable[playerCombination[i]]++;	
+				count += vTable[WINNING_COMBINATION[i]];
+				vTable[WINNING_COMBINATION[i]]++;
+			}
+			return count;
+		}
+		
+		public int rateCombination1(int playerCombination[]) {
 			int count = 0;
 			
 			for (int i = 0; i < playerCombination.length; i++) {	
