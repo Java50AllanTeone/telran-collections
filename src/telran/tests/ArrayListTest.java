@@ -6,7 +6,6 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import telran.util.ArrayList;
-import telran.util.List;
 
 class ArrayListTest extends ListTest {
 	ArrayList<Integer> al;
