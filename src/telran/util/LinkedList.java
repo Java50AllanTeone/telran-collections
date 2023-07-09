@@ -1,6 +1,8 @@
 package telran.util;
 
+import java.security.NoSuchAlgorithmException;
 import java.util.Iterator;
+import java.util.NoSuchElementException;
 import java.util.Objects;
 import java.util.function.Predicate;
 
@@ -39,7 +41,7 @@ public class LinkedList<T> implements List<T> {
 		var node = head;
 		
 		for (int i = 0; i < arr.length; i++) {
-			arr[i] = node;
+			arr[i] = node.obj;
 			node = node.next;
 		}
 		return arr;
@@ -56,29 +58,51 @@ public class LinkedList<T> implements List<T> {
 		var node = head;
 		
 		for (int i = 0; i < size; i++) {
-			if (Objects.equals(node, pattern)) {
+			if (Objects.equals(node.obj, pattern)) {
 				return i;
 			}
+			node = node.next;
 		}
 		return -1;
 	}
 
 	@Override
 	public int lastIndexOf(T pattern) {
-		// TODO Auto-generated method stub
-		return 0;
+		var node = tail;
+		
+		for (int i = size - 1; i >= 0; i--) {
+			if (Objects.equals(node.obj, pattern)) {
+				return i;
+			}
+			node = node.prev;
+		}
+		return -1;
 	}
 
 	@Override
 	public int indexOf(Predicate<T> predicate) {
-		// TODO Auto-generated method stub
-		return 0;
+		var node = head;
+		
+		for (int i = 0; i < size; i++) {
+			if (predicate.test(node.obj)) {
+				return i;
+			}
+			node = node.next;
+		}
+		return -1;
 	}
 
 	@Override
 	public int lastIndexOf(Predicate<T> predicate) {
-		// TODO Auto-generated method stub
-		return 0;
+		var node = tail;
+		
+		for (int i = size - 1; i >= 0; i--) {
+			if (predicate.test(node.obj)) {
+				return i;
+			}
+			node = node.prev;
+		}
+		return -1;
 	}
 
 	@Override
@@ -90,8 +114,15 @@ public class LinkedList<T> implements List<T> {
 
 	@Override
 	public void set(int index, T object) {
-		// TODO Auto-generated method stub
-
+		indexValidation(index, false);
+		Node<T> nodePrev = getNode(index);
+		
+		Node<T> node = new Node<>(object);
+		node.next = nodePrev.next;
+		node.prev = nodePrev.prev;
+		
+		nodePrev.prev.next = node;
+		nodePrev.next.prev = node;
 	}
 
 	@Override
@@ -104,14 +135,46 @@ public class LinkedList<T> implements List<T> {
 
 	@Override
 	public T remove(int index) {
-		// TODO Auto-generated method stub
-		return null;
+		Node<T> node;
+		
+		try {
+			indexValidation(index, false);
+			node = getNode(index);
+			
+			if (index == 0) {
+				removeHead(node);
+			} else if (index == size - 1) {
+				removeTail(node);
+			} else {
+				removeMiddle(node);
+			}
+			size--;
+		} catch (IndexOutOfBoundsException e) {
+			throw new NoSuchElementException(e);
+		}
+		
+		return node.obj;
 	}
+
+	
 
 	@Override
 	public boolean addAll(int index, Collection<T> collection) {
-		// TODO Auto-generated method stub
-		return false;
+		indexValidation(index, true);
+		int prevSize = this.size;
+		
+		Node<T> nodeNext = getNode(index);
+		Node<T> nodePrev = nodeNext.prev;
+		
+		for (T elem : collection) {
+			nodePrev.next = new Node<T>(elem);
+			nodePrev.next.prev = nodePrev;
+			nodePrev = nodePrev.next;
+			size++;
+		}
+		nodePrev.next = nodeNext;
+		nodeNext.prev = nodePrev;
+		return prevSize < size;
 	}
 	
 	
@@ -173,6 +236,23 @@ public class LinkedList<T> implements List<T> {
 			node.prev = tail;
 			tail = node;
 		}
+	}
+	
+	
+	private void removeMiddle(Node<T> node) {
+		node.prev.next = node.next;
+		node.next.prev = node.prev;
+		node.next = node.prev = null;
+	}
+
+	private void removeTail(Node<T> node) {
+		tail = node.prev;
+		node.prev.next = node.prev = null;
+	}
+
+	private void removeHead(Node<T> node) {		
+		head = node.next;
+		node.next.prev = node.next = null;
 	}
 
 
