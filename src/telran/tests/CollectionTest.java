@@ -83,9 +83,8 @@ abstract class CollectionTest {
 		assertEquals(6, collection.size());
 		collection.add(7);
 		assertEquals(7, collection.size());
-		
-		var al = (ArrayList<Integer>)collection;
-		al.remove(0);
+
+		collection.remove(1);
 		assertEquals(6, collection.size());
 	}
 	
@@ -144,7 +143,7 @@ abstract class CollectionTest {
 		assertFalse(collection.contains(6));
 		
 		collection.clear();
-		
+
 		assertFalse(collection.contains(1));
 		assertFalse(collection.contains(6));
 	}
@@ -154,12 +153,11 @@ abstract class CollectionTest {
 	
 	@Test
 	void retainAllTest() {
-		var retain = new ArrayList<>(new Integer[]{1, 2, 3}, 6);
+		Integer[] arr = new Integer[] {1, 2, 3};
+		var retain = new ArrayList<>(arr);
 		assertTrue(collection.retainAll(retain));
 		assertFalse(collection.retainAll(retain));
-		assertEquals(retain, collection);
-		assertEquals(retain.size(), collection.size());
-		assertArrayEquals(retain.toArray(), collection.toArray());
+		assertArrayEquals(arr, collection.toArray());
 	}
 	
 

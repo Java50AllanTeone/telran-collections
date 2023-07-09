@@ -60,42 +60,41 @@ abstract class ListTest extends CollectionTest {
 	void getTest() {
 		assertThrowsExactly(IndexOutOfBoundsException.class, () -> list.get(100));
 		assertThrowsExactly(IndexOutOfBoundsException.class, () -> list.get(-1));
+		
 		assertEquals(1, list.get(0));
 		assertEquals(5, list.get(4));
 	}
 	
 	@Test
 	void setTest() {
-		exp = new ArrayList<>(new Integer[]{1, 2, 3, 4, 5}, 6);
-		assertEquals(exp, list);
+		Integer[] arr = new Integer[]{1, 2, 3, 4, 5};
+		assertArrayEquals(arr, list.toArray());
 		
 		list.set(0, 1);
-		assertEquals(exp, list);
+		assertArrayEquals(arr, list.toArray());
 		
 		list.set(0, 0);
-		assertNotEquals(exp, list);
-		
-		exp = new ArrayList<>(new Integer[]{0, 2, 3, 4, 5}, 6);
-		assertEquals(exp, list);
+		arr = new Integer[]{0, 2, 3, 4, 5};
+		assertArrayEquals(arr, list.toArray());
 	}
 	
 
 	@Test
 	void removeTest() {
-		exp = new ArrayList<>(new Integer[]{1, 2, 3, 4, 5}, 6);
-		assertEquals(exp, list);
+		Integer[] arr = new Integer[]{1, 2, 3, 4, 5};
+		assertArrayEquals(arr, list.toArray());
 		
 		list.remove(0);
-		exp = new ArrayList<>(new Integer[]{2, 3, 4, 5}, 6);
-		assertEquals(exp, list);
+		arr = new Integer[]{2, 3, 4, 5};
+		assertArrayEquals(arr, list.toArray());
 		
 		list.remove(3);
-		exp = new ArrayList<>(new Integer[]{2, 3, 4}, 6);
-		assertEquals(exp, list);
+		arr = new Integer[] {2, 3, 4};
+		assertArrayEquals(arr, list.toArray());
 		
 		list.remove(1);
-		exp = new ArrayList<>(new Integer[]{2, 4}, 6);
-		assertEquals(exp, list);
+		arr = new Integer[] {2, 4};
+		assertArrayEquals(arr, list.toArray());
 	}
 	
 	
