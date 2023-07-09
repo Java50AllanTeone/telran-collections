@@ -1,7 +1,7 @@
 package telran.util;
 
-import java.util.Comparator;
 import java.util.Iterator;
+import java.util.Objects;
 import java.util.function.Predicate;
 
 public class LinkedList<T> implements List<T> {
@@ -35,8 +35,14 @@ public class LinkedList<T> implements List<T> {
 
 	@Override
 	public Object[] toArray() {
-		// TODO Auto-generated method stub
-		return null;
+		Object[] arr = new Object[size];
+		var node = head;
+		
+		for (int i = 0; i < arr.length; i++) {
+			arr[i] = node;
+			node = node.next;
+		}
+		return arr;
 	}
 
 	@Override
@@ -47,8 +53,14 @@ public class LinkedList<T> implements List<T> {
 
 	@Override
 	public int indexOf(Object pattern) {
-		// TODO Auto-generated method stub
-		return 0;
+		var node = head;
+		
+		for (int i = 0; i < size; i++) {
+			if (Objects.equals(node, pattern)) {
+				return i;
+			}
+		}
+		return -1;
 	}
 
 	@Override
