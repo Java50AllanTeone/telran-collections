@@ -49,8 +49,39 @@ public class LinkedList<T> implements List<T> {
 
 	@Override
 	public Iterator<T> iterator() {
-		// TODO Auto-generated method stub
-		return null;
+		return new Iterator<T>() {
+			Node<T> current = head;
+			boolean wasNext = false;
+
+			public boolean hasNext() {
+				return current != null;
+			}
+
+			public T next() {
+				if (!hasNext()) {
+					throw new NoSuchElementException();
+				}
+				wasNext = true;
+				current = current.next;
+				return current.prev.obj;
+			}
+
+			public void remove() {
+				if (!wasNext) {
+					throw new IllegalStateException();
+				}
+				wasNext = false;
+				var cr = current.prev;
+				
+				if (cr.prev == null) {
+					removeHead(cr);
+				} else if (cr.next == null) {
+					removeTail(cr);
+				} else {
+					removeMiddle(cr);
+				}
+			}
+		};
 	}
 
 	@Override
