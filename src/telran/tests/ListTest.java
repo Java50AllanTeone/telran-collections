@@ -199,20 +199,6 @@ abstract class ListTest extends CollectionTest {
 		assertEquals(-1, list.lastIndexOf(e -> e.toString().equals("1")));
 	}
 	
-	@Test
-	void sortTest() {
-		list = new ArrayList<>(new Integer[]{1, 3, 2, 5, 4}, 5);
-		exp = new ArrayList<>(new Integer[]{1, 2, 3, 4, 5}, 5);
-		assertNotEquals(list, exp);
-		
-		list.sort((e1, e2) -> e1 - e2);
-		assertEquals(exp, list);
-		
-		exp = new ArrayList<>(new Integer[]{5, 4, 3, 2, 1}, 5);
-		list.sort((e1, e2) -> e2 - e1);
-		assertEquals(exp, list);	
-	}
-	
 	
 	
 	

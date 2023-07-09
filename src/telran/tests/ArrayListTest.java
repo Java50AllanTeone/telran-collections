@@ -24,11 +24,12 @@ class ArrayListTest extends ListTest {
 		assertTrue(collection.add(6));
 		assertEquals(exp, collection);
 		assertEquals(exp.size(), collection.size());
-		assertEquals(exp.getCapacity(), collection.getCapacity());
+		var e = (ArrayList<Integer>) exp;
+		assertEquals(e.getCapacity(), al.getCapacity());
 		
 		int size = collection.size();
 		collection.add(7);
-		assertEquals((size * 3) / 2 + 1, collection.getCapacity());
+		assertEquals((size * 3) / 2 + 1, al.getCapacity());
 	}
 	
 	@Test
@@ -88,6 +89,29 @@ class ArrayListTest extends ListTest {
 		exp = new ArrayList<>(new Integer[]{1, 2, 3, 4, 5}, 6);
 		
 		assertEquals(exp.toString(), collection.toString());
+	}
+	
+	@Test
+	void trimToSizeTest() {
+		var arr = collection.toArray();
+		var size = collection.size();
+		
+		assertNotEquals(size, al.getCapacity());
+		al.trimToSize();
+		assertEquals(al.size(), al.getCapacity());
+		assertEquals(size, al.size());
+		assertArrayEquals(arr, al.toArray());
+	}
+	
+	@Test
+	void ensureCapacityTest() {
+		assertEquals(6, al.getCapacity());
+		al.ensureCapacity(6);
+		assertEquals(6, al.getCapacity());
+		al.ensureCapacity(7);
+		assertEquals(7, al.getCapacity());
+		al.ensureCapacity(100);
+		assertEquals(100, al.getCapacity());
 	}
 	
 	

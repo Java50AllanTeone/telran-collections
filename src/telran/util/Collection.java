@@ -8,10 +8,7 @@ public interface Collection<T> extends Iterable<T> {
 	boolean add(T obj);
 	boolean remove(Object pattern);
 	boolean contains(Object o);
-	void ensureCapacity(int capacity);
-	void trimToSize();
 	int size();
-	int getCapacity();
 	Object[] toArray();
 	
 	

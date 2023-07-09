@@ -35,7 +35,6 @@ abstract class CollectionTest {
 		
 		assertEquals(exp, collection);
 		assertEquals(4, collection.size());
-		assertEquals(exp.getCapacity(), collection.getCapacity());
 	}
 	
 	
@@ -72,7 +71,6 @@ abstract class CollectionTest {
 		assertTrue(collection.removeIf(e -> e == 5));
 		
 		assertEquals(4, collection.size());
-		assertEquals(6, collection.getCapacity());
 		
 		var exp = new Object[]{1, 2, 3, 4};
 		assertArrayEquals(exp, collection.toArray());
@@ -152,16 +150,7 @@ abstract class CollectionTest {
 	}
 
 	
-	@Test
-	void ensureCapacityTest() {
-		assertEquals(6, collection.getCapacity());
-		collection.ensureCapacity(6);
-		assertEquals(6, collection.getCapacity());
-		collection.ensureCapacity(7);
-		assertEquals(7, collection.getCapacity());
-		collection.ensureCapacity(100);
-		assertEquals(100, collection.getCapacity());
-	}
+
 	
 	@Test
 	void retainAllTest() {
@@ -170,21 +159,10 @@ abstract class CollectionTest {
 		assertFalse(collection.retainAll(retain));
 		assertEquals(retain, collection);
 		assertEquals(retain.size(), collection.size());
-		assertEquals(retain.getCapacity(), collection.getCapacity());
 		assertArrayEquals(retain.toArray(), collection.toArray());
 	}
 	
-	@Test
-	void trimToSizeTest() {
-		var arr = collection.toArray();
-		var size = collection.size();
-		
-		assertNotEquals(size, collection.getCapacity());
-		collection.trimToSize();
-		assertEquals(collection.size(), collection.getCapacity());
-		assertEquals(size, collection.size());
-		assertArrayEquals(arr, collection.toArray());
-	}
+
 	
 	@Test
 	void iteratorTest() {

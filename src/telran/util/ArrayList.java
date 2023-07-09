@@ -50,16 +50,13 @@ public class ArrayList<T> implements List<T>, Iterable<T> {
 		return true;
 	}
 
-	@Override
+
 	public void ensureCapacity(int capacity) {
 		if (array.length < capacity)
 			reallocate(capacity);
 	}
 
-	@Override
-	public void trimToSize() {
-		reallocate(size);
-	}
+	
 
 	@Override
 	public int size() {
@@ -153,11 +150,6 @@ public class ArrayList<T> implements List<T>, Iterable<T> {
 	public void set(int index, T object) {
 		indexValidation(index, false);
 		array[index] = object;
-	}
-
-	@Override
-	public void sort(Comparator<T> c) {
-		Arrays.sort(array, 0, size, c);
 	}
 
 	@Override
@@ -269,6 +261,10 @@ public class ArrayList<T> implements List<T>, Iterable<T> {
 		}
 		array = res;
 		return oldSize > size;
+	}
+	
+	public void trimToSize() {
+		reallocate(size);
 	}
 	
 

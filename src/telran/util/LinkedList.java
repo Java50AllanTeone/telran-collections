@@ -27,30 +27,11 @@ public class LinkedList<T> implements List<T> {
 		return true;
 	}
 
-	
-	@Override
-	public void ensureCapacity(int capacity) {
-		// TODO Auto-generated method stub
-
-	}
-
-	@Override
-	public void trimToSize() {
-		// TODO Auto-generated method stub
-
-	}
-
 	@Override
 	public int size() {
-		// TODO Auto-generated method stub
-		return 0;
+		return size;
 	}
 
-	@Override
-	public int getCapacity() {
-		// TODO Auto-generated method stub
-		return 0;
-	}
 
 	@Override
 	public Object[] toArray() {
@@ -97,12 +78,6 @@ public class LinkedList<T> implements List<T> {
 
 	@Override
 	public void set(int index, T object) {
-		// TODO Auto-generated method stub
-
-	}
-
-	@Override
-	public void sort(Comparator<T> c) {
 		// TODO Auto-generated method stub
 
 	}
