@@ -175,7 +175,7 @@ public class LinkedList<T> implements List<T> {
 		try {
 			indexValidation(index, false);
 			node = getNode(index);
-			
+
 			if (index == 0) {
 				removeHead(node);
 			} else if (index == size - 1) {
