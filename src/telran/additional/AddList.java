@@ -49,15 +49,6 @@ public class AddList {
 			current.next = target;
 		}
 
-		public void print() {
-			Node node = this.head;
-			do {
-				System.out.println(node);
-				node = node.next;
-			}
-			while (node != null);
-		}
-
 		public boolean floydCheck() {
 			Node slow = head;
 			Node fast = head;
@@ -112,6 +103,11 @@ public class AddList {
 			return -1;
 		}
 
+
+		//very slow
+		//destroys root list
+		//doesn't check if the list has loop
+		//not finished
 		public int getIndexWrapper() {
 			class MyNode {
 				Node data;
@@ -129,7 +125,6 @@ public class AddList {
 					}
 					return index;
 				}
-
 			}
 
 			int index = 0;

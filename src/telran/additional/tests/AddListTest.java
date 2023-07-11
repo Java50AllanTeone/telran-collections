@@ -1,13 +1,8 @@
 package telran.additional.tests;
 
 import org.junit.jupiter.api.BeforeAll;
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import telran.additional.AddList;
-
-import java.util.Objects;
-
-import static org.junit.jupiter.api.Assertions.*;
 
 class AddListTest {
     static AddList.LinkedList ll = new AddList.LinkedList();
@@ -21,7 +16,7 @@ class AddListTest {
     }
 
     @Test
-    void testFloydLongLoop() {
+    void testFloyd() {
         ll.getIndexFloyd();
     }
 
