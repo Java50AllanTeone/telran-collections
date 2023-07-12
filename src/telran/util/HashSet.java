@@ -126,22 +126,12 @@ public class HashSet<T> implements Set<T> {
 			private LinkedList<T> getList() {
 				var list = hashTable[hashIndex];
 
-				while (hashTable[hashIndex] == null) {
+				while (list == null || list.size() == 0) {
 					list = hashTable[++hashIndex];
 				}
 				return list;
 			}
-			
-//			private LinkedList<T> nextList() {
-//				LinkedList<T> list;
-//				do {
-//					list = hashTable[++curIndex];
-//				} while (list == null);
-//				return list;
-//			}
-			
-			
-			
+					
 		};
 	}
 
