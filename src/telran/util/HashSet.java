@@ -96,16 +96,14 @@ public class HashSet<T> implements Set<T> {
 				if (!hasNext()) {
 					throw new NoSuchElementException();
 				}
-				LinkedList<T> list = getList();
 				
 				if (curIt == null) {
-					curIt = list.iterator();
+					curIt = getList().iterator();
 				}
 				
 				if (!curIt.hasNext()) {
 					hashIndex++;
-					list = getList();
-					curIt = list.iterator();
+					curIt = getList().iterator();
 				}		
 				counter++;
 				wasNext = true;
@@ -120,6 +118,9 @@ public class HashSet<T> implements Set<T> {
 				if (!wasNext) {
 					throw new IllegalStateException();
 				}
+				
+				
+				
 				
 			}
 			
