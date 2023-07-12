@@ -16,6 +16,10 @@ abstract class CollectionTest {
 	Collection<Integer> collection;
 	Collection<Integer> exp;
 	
+	protected abstract void runArrayTest(Integer[] expected, Integer[] actual);
+	protected abstract void runArrayTest(Integer[] expected, Object[] actual);
+	protected abstract void runArrayTest(Object[] expected, Object[] actual);
+	
 	@BeforeEach
 	void init() {
 		for (var e : arr) {
@@ -44,11 +48,11 @@ abstract class CollectionTest {
 		var arrTrg = collection.toArray(arrSrc);
 		var exp = new Integer[]{1, 2, 3, 4, 5};
 		assertNotEquals(Arrays.toString(arrTrg), Arrays.toString(arrSrc));
-		assertArrayEquals(exp, arrTrg);
+		runArrayTest(exp, arrTrg);
 		
 		arrSrc = new Integer[10];
 		arrTrg = collection.toArray(arrSrc);
-		assertArrayEquals(arrTrg, arrSrc);
+		runArrayTest(arrTrg, arrSrc);
 	}
 	
 	@Test
@@ -56,12 +60,12 @@ abstract class CollectionTest {
 		collection = new ArrayList<>(new Integer[]{1, 2, 3, 4, 5}, 5);
 		var arr = collection.toArray();
 		var exp = new Object[]{1, 2, 3, 4, 5};
-		assertArrayEquals(exp, arr);
+		runArrayTest(exp, arr);
 		
 		collection.add(6);
 		arr = collection.toArray();
 		exp = new Object[]{1, 2, 3, 4, 5, 6};
-		assertArrayEquals(exp, arr);
+		runArrayTest(exp, arr);
 	}
 	
 	
@@ -73,7 +77,7 @@ abstract class CollectionTest {
 		assertEquals(4, collection.size());
 		
 		var exp = new Object[]{1, 2, 3, 4};
-		assertArrayEquals(exp, collection.toArray());
+		runArrayTest(exp, collection.toArray());
 	}
 	
 	@Test
@@ -133,7 +137,7 @@ abstract class CollectionTest {
 		collection.clear();
 		assertTrue(collection.isEmpty());
 		assertEquals(0, collection.size());
-		assertArrayEquals(new Object[0], collection.toArray());
+		runArrayTest(new Object[0], collection.toArray());
 	}
 	
 
@@ -157,7 +161,7 @@ abstract class CollectionTest {
 		var retain = new ArrayList<>(arr);
 		assertTrue(collection.retainAll(retain));
 		assertFalse(collection.retainAll(retain));
-		assertArrayEquals(arr, collection.toArray());
+		runArrayTest(arr, collection.toArray());
 	}
 	
 
@@ -175,6 +179,8 @@ abstract class CollectionTest {
 		
 		assertThrowsExactly(NoSuchElementException.class, it::next);
 	}
+	
+
 	
 	
 	

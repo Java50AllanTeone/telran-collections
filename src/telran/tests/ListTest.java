@@ -199,6 +199,21 @@ abstract class ListTest extends CollectionTest {
 	}
 	
 	
+	@Override
+	protected void runArrayTest(Integer[] expected, Integer[] actual) {
+		assertArrayEquals(expected, actual);
+	}
+	
+	@Override
+	protected void runArrayTest(Integer[] expected, Object[] actual) {
+		assertArrayEquals(expected, actual);
+	}
+	
+	@Override
+	protected void runArrayTest(Object[] expected, Object[] actual) {
+		assertArrayEquals(expected, actual);
+	}
+	
 	
 	
 	
