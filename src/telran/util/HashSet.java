@@ -24,9 +24,9 @@ public class HashSet<T> implements Set<T> {
 	public boolean add(T obj) {
 		boolean res = false;
 		
-		/*if ((float) size / hashTable.length >= factor) {
+		if ((float) size / hashTable.length >= factor) {
 			hashTableRecreation();
-		}*/
+		}
 		int index = getIndex(obj);
 		LinkedList<T> list = null;
 		
@@ -144,7 +144,6 @@ public class HashSet<T> implements Set<T> {
 //			}
 			
 			public void remove() {
-//				System.out.println(listIndex);
 				if (!wasNext) {
 					throw new IllegalStateException();
 				}			
