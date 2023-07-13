@@ -28,6 +28,8 @@ public class LinkedList<T> implements List<T> {
 		
 		
 	}
+	
+	
 
 	@Override
 	public boolean add(T obj) {
@@ -217,7 +219,15 @@ public class LinkedList<T> implements List<T> {
 	
 	@Override
 	public String toString() {
-		return "LinkedList [head=" + head + ", tail=" + tail + ", size=" + size + "]";
+		String res = "";
+		var temp = head;
+		
+		for (int i = 0; i < size(); i++) {
+			res += temp + "->";
+			temp = temp.next;
+		}
+		
+		return res;
 	}
 
 	private Node<T> getNode(int index) {

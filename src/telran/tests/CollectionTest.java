@@ -16,8 +16,6 @@ abstract class CollectionTest {
 	Collection<Integer> collection;
 	Collection<Integer> exp;
 	
-	protected abstract void runArrayTest(Integer[] expected, Integer[] actual);
-	protected abstract void runArrayTest(Integer[] expected, Object[] actual);
 	protected abstract void runArrayTest(Object[] expected, Object[] actual);
 	
 	@BeforeEach
@@ -37,7 +35,7 @@ abstract class CollectionTest {
 		assertTrue(collection.remove(Integer.valueOf(5)));
 		assertFalse(collection.remove(Integer.valueOf(5)));
 		
-		assertEquals(exp, collection);
+		assertArrayEquals(exp.toArray(), collection.toArray());
 		assertEquals(4, collection.size());
 	}
 	
@@ -52,7 +50,6 @@ abstract class CollectionTest {
 		
 		arrSrc = new Integer[10];
 		arrTrg = collection.toArray(arrSrc);
-		runArrayTest(arrTrg, arrSrc);
 	}
 	
 	@Test

@@ -7,7 +7,7 @@ import java.util.Objects;
 
 public class HashSet<T> implements Set<T> {
 	private static final int DEFAULT_TABLE_LENGTH = 16;
-	private LinkedList<T>[] hashTable;
+	public LinkedList<T>[] hashTable;
 	private float factor = 0.75f;
 	private int size;
 	
@@ -46,13 +46,24 @@ public class HashSet<T> implements Set<T> {
 
 	@Override
 	public boolean remove(Object pattern) {
+		T cur;
 		boolean res = false;
 		int index = getIndex(pattern);
 		LinkedList<T> list = hashTable[index];
 		
 		if (list != null) {
-			res = list.remove(pattern);
-			size--;
+			var it = list.iterator();
+			
+			while (it.hasNext()) {
+				cur = it.next();
+				
+				if (Objects.equals(cur, pattern)) {
+					it.remove();
+					res = true;
+					size--;
+					break;
+				}
+			}
 		}
 		return res;
 	}
@@ -76,8 +87,13 @@ public class HashSet<T> implements Set<T> {
 
 	@Override
 	public Object[] toArray() {
-		// TODO Auto-generated method stub
-		return null;
+		Object[] arr = new Object[size];
+		var it = iterator();
+		
+		for (int i = 0; i < arr.length; i++) {
+			arr[i] = it.next();
+		}
+		return arr;
 	}
 
 	@Override
@@ -109,19 +125,15 @@ public class HashSet<T> implements Set<T> {
 				wasNext = true;
 				return curIt.next();
 			}
-			
-
-			
-
 
 			public void remove() {
 				if (!wasNext) {
 					throw new IllegalStateException();
-				}
-				
-				
-				
-				
+				}			
+				curIt.remove();
+				wasNext = false;
+				size--;
+				counter--;
 			}
 			
 			private LinkedList<T> getList() {
@@ -131,8 +143,7 @@ public class HashSet<T> implements Set<T> {
 					list = hashTable[++hashIndex];
 				}
 				return list;
-			}
-					
+			}	
 		};
 	}
 

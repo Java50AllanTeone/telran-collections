@@ -20,27 +20,6 @@ public class HashSetTest extends SetTest {
 	}
 
 	@Override
-	protected void runArrayTest(Integer[] expected, Integer[] actual) {
-		Integer[] expectedSorted = Arrays.copyOf(expected, expected.length);
-		Integer[] actualSorted = Arrays.copyOf(actual, actual.length);
-		Arrays.sort(expectedSorted);
-		Arrays.sort(actualSorted);
-		assertArrayEquals(expectedSorted, actualSorted);
-		
-
-	}
-
-	@Override
-	protected void runArrayTest(Integer[] expected, Object[] actual) {
-		Integer[] expectedSorted = Arrays.copyOf(expected, expected.length);
-		Object[] actualSorted = Arrays.copyOf(actual, actual.length);
-		Arrays.sort(expectedSorted);
-		Arrays.sort(actualSorted);
-		assertArrayEquals(expectedSorted, actualSorted);
-
-	}
-
-	@Override
 	protected void runArrayTest(Object[] expected, Object[] actual) {
 		Object[] expectedSorted = Arrays.copyOf(expected, expected.length);
 		Object[] actualSorted = Arrays.copyOf(actual, actual.length);
