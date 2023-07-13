@@ -24,9 +24,9 @@ public class HashSet<T> implements Set<T> {
 	public boolean add(T obj) {
 		boolean res = false;
 		
-		if ((float) size / hashTable.length >= factor) {
+		/*if ((float) size / hashTable.length >= factor) {
 			hashTableRecreation();
-		}
+		}*/
 		int index = getIndex(obj);
 		LinkedList<T> list = null;
 		
@@ -101,39 +101,58 @@ public class HashSet<T> implements Set<T> {
 		return new Iterator<T>() {
 			int counter = 0;
 			int hashIndex = 0;
-			Iterator<T> curIt;	
+			int listIndex = 0;
+//			Iterator<T> curIt;	
 			boolean wasNext = false;
 
 			public boolean hasNext() {
 				return counter < size;
 			}
-
+			
 			public T next() {
-				if (!hasNext()) {
+				if (!hasNext()) {			
 					throw new NoSuchElementException();
 				}
 				
-				if (curIt == null) {
-					curIt = getList().iterator();
-				}
-				
-				if (!curIt.hasNext()) {
+				if (listIndex == getList().size()) {
 					hashIndex++;
-					curIt = getList().iterator();
-				}		
+					listIndex = 0;
+				}
 				counter++;
 				wasNext = true;
-				return curIt.next();
+				
+				return getList().get(listIndex++);
 			}
 
+//			Iterator based
+//			public T next() {
+//				if (!hasNext()) {
+//					throw new NoSuchElementException();
+//				}
+//				
+//				if (curIt == null) {
+//					curIt = getList().iterator();
+//				}
+//				
+//				if (!curIt.hasNext()) {
+//					hashIndex++;
+//					curIt = getList().iterator();
+//				}		
+//				counter++;
+//				wasNext = true;
+//				return curIt.next();
+//			}
+			
 			public void remove() {
+//				System.out.println(listIndex);
 				if (!wasNext) {
 					throw new IllegalStateException();
 				}			
-				curIt.remove();
-				wasNext = false;
+				getList().remove(--listIndex);
+//				curIt.remove();
 				size--;
 				counter--;
+				wasNext = false;
 			}
 			
 			private LinkedList<T> getList() {

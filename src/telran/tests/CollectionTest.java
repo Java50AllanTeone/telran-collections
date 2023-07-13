@@ -34,8 +34,8 @@ abstract class CollectionTest {
 		exp = new ArrayList<>(new Integer[]{1, 2, 3, 4}, 6);
 		assertTrue(collection.remove(Integer.valueOf(5)));
 		assertFalse(collection.remove(Integer.valueOf(5)));
-		
-		assertArrayEquals(exp.toArray(), collection.toArray());
+
+		runArrayTest(exp.toArray(), collection.toArray());
 		assertEquals(4, collection.size());
 	}
 	
