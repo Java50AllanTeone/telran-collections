@@ -37,6 +37,8 @@ public class ArrayList<T> implements List<T>, Iterable<T> {
 		this(capacity);
 		addAll(array);
 	}
+	
+	
 
 
 

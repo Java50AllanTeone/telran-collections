@@ -3,6 +3,7 @@ package telran.tests;
 import static org.junit.jupiter.api.Assertions.*;
 
 import java.util.Arrays;
+import java.util.Random;
 import java.util.NoSuchElementException;
 
 import org.junit.jupiter.api.BeforeEach;
@@ -12,11 +13,14 @@ import telran.util.ArrayList;
 import telran.util.Collection;
 
 abstract class CollectionTest {
+	static final int N_BIG_NUMBERS = 100_000;
+	static final int N_RUNS = 1000;
 	Integer[] arr = {1, 2, 3, 4, 5};
 	Collection<Integer> collection;
 	Collection<Integer> exp;
 	
 	protected abstract void runArrayTest(Object[] expected, Object[] actual);
+	protected abstract Collection<Integer> getCollection(Integer[] ar1);
 	
 	@BeforeEach
 	void init() {
@@ -76,6 +80,19 @@ abstract class CollectionTest {
 		var exp = new Object[]{1, 2, 3, 4};
 		runArrayTest(exp, collection.toArray());
 	}
+	
+	@Test
+	 void removeIfPerformanceTest() {
+		 Integer[] bigArray = getBigArray();
+		 Collection<Integer> bigCollection = null;
+		 for(int i = 0; i < N_RUNS; i++) {
+			 bigCollection = getCollection(bigArray);
+			  bigCollection.clear();
+			  assertEquals(0, bigCollection.size());
+		 }
+		 
+		
+	 }
 	
 	@Test
 	void sizeTest() {
@@ -175,6 +192,16 @@ abstract class CollectionTest {
 			it.next();
 		
 		assertThrowsExactly(NoSuchElementException.class, it::next);
+	}
+	
+	
+	private Integer[] getBigArray() {
+		Integer[] res = new Integer[N_BIG_NUMBERS];
+		Random gen = new Random();
+		for(int i = 0; i < N_BIG_NUMBERS; i++) {
+			res[i] = gen.nextInt();
+		}
+		return res;
 	}
 	
 

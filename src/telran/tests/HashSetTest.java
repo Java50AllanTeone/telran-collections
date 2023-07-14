@@ -6,6 +6,7 @@ import java.util.Arrays;
 
 import org.junit.jupiter.api.BeforeEach;
 
+import telran.util.Collection;
 import telran.util.HashSet;
 
 public class HashSetTest extends SetTest {
@@ -27,6 +28,15 @@ public class HashSetTest extends SetTest {
 		Arrays.sort(actualSorted);
 		assertArrayEquals(expectedSorted, actualSorted);
 
+	}
+	
+	@Override
+	protected Collection<Integer> getCollection(Integer[] ar) {
+		HashSet<Integer> res = new HashSet<>();
+		for(Integer num: ar) {
+			res.add(num);
+		}
+		return res;
 	}
 
 }

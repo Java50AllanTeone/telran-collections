@@ -6,6 +6,7 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import telran.util.ArrayList;
+import telran.util.Collection;
 
 class ArrayListTest extends ListTest {
 	ArrayList<Integer> al;
@@ -115,13 +116,13 @@ class ArrayListTest extends ListTest {
 	}
 	
 	
-	/*@Override
+	@Override
 	protected Collection<Integer> getCollection(Integer[] ar1) {
-		ArrayList<Integer> arrayList	 = new ArrayList<>();
-		for (Integer num : ar1) {
+		ArrayList<Integer> arrayList = new ArrayList<>();
+		for(Integer num: ar1) {
 			arrayList.add(num);
 		}
 		return arrayList;
-	}*/
+	}
 
 }
