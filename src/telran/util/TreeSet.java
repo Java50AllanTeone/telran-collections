@@ -2,8 +2,8 @@ package telran.util;
 
 import java.util.Comparator;
 import java.util.Iterator;
+import java.util.NoSuchElementException;
 
-import telran.util.TreeSet.Node;
 
 @SuppressWarnings("unchecked")
 public class TreeSet<T> implements SortedSet<T> {
@@ -19,6 +19,8 @@ public class TreeSet<T> implements SortedSet<T> {
 	public TreeSet() {
 		this((Comparator<T>) Comparator.naturalOrder());
 	}
+	
+	
 	
 	private static class Node<T> {
 		T obj;
@@ -97,8 +99,7 @@ public class TreeSet<T> implements SortedSet<T> {
 
 	@Override
 	public Iterator<T> iterator() {
-		// TODO Auto-generated method stub
-		return null;
+		return new TreeIterator();
 	}
 
 	@Override
@@ -174,11 +175,11 @@ public class TreeSet<T> implements SortedSet<T> {
 	}
 	
 	
-	private Node<T> getLeastFrom(Node<T> current) {
-		while (current.left != null) {
-			current = current.left;
+	private Node<T> getLeastFrom(Node<T> node) {
+		while (node.left != null) {
+			node = node.left;
 		}
-		return current;
+		return node;
 	}
 	
 	private Node<T> getGreatestFrom(Node<T> node) {
@@ -188,30 +189,43 @@ public class TreeSet<T> implements SortedSet<T> {
 		return node;
 	}
 	
-	 class TreeIterator<T> implements Iterator<T> {
-		Node<T> current;
-		
-		TreeIterator() {
-			this.current = getLeastFrom(current);
-		}
+	
+	class TreeIterator implements Iterator<T> {
+		Node<T> next = getLeastFrom(root);
+		Node<T> prev;
 
 		@Override
 		public boolean hasNext() {
-			// TODO Auto-generated method stub
-			return false;
+			return next != null;
 		}
 
 		@Override
 		public T next() {
-			// TODO Auto-generated method stub
-			return null;
+			if (!hasNext()) {			
+				throw new NoSuchElementException();
+			}		
+			if (next == prev) {
+				next = getNext();
+			}
+			prev = next;
+			return next.obj;
 		}
 		
-		@Override
-		public void remove() {
-	
-		}
 		
+		private Node<T> getNext() {		
+			var next = prev;
+			
+			while (comp.compare(next.obj, prev.obj) <= 0) {
+				if (next.right == null || comp.compare(next.right.obj, prev.obj) <= 0) {
+					next = next.parent;
+				} else {
+					next = getLeastFrom(next.right);
+				}
+			}
+			return next;
+		}
 	}
+	
+	 
 
 }
