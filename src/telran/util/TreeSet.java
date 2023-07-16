@@ -42,8 +42,31 @@ public class TreeSet<T> implements SortedSet<T> {
 
 	@Override
 	public boolean add(T obj) {
-		// TODO Auto-generated method stub
-		return false;
+		Node<T> node = new Node<T>(obj);
+		boolean res = false;
+		
+		if (root == null) {
+			res = true;
+			root = node;
+		} else {
+			Node<T> parent = getParent(obj);
+			
+			if (parent != null) {
+				res = true;
+				node.parent = parent;
+				int compRes = comp.compare(obj, parent.obj);
+				
+				if (compRes > 0) {
+					parent.right = node;
+				} else {
+					parent.left = node;
+				}
+			}
+		}
+		if (res) {
+			size++;
+		}
+		return res;
 	}
 
 	@Override
@@ -53,9 +76,9 @@ public class TreeSet<T> implements SortedSet<T> {
 	}
 
 	@Override
-	public boolean contains(Object o) {
-		// TODO Auto-generated method stub
-		return false;
+	public boolean contains(Object pattern) {
+		
+		return getNode((T)pattern) != null;
 	}
 
 	@Override
@@ -78,15 +101,29 @@ public class TreeSet<T> implements SortedSet<T> {
 
 	@Override
 	public T first() {
-		// TODO Auto-generated method stub
+		T res = null;
+		
+		if (root != null) {
+			res = getLeastFrom(root).obj;
+		}
 		return null;
 	}
 
+
+
+
 	@Override
 	public T last() {
-		// TODO Auto-generated method stub
+		T res = null;
+		
+		if (root != null) {
+			res = getGreatestFrom(root).obj;
+		}
 		return null;
 	}
+
+
+
 
 	@Override
 	public T ceiling(T key) {
@@ -132,6 +169,21 @@ public class TreeSet<T> implements SortedSet<T> {
 			res = node;
 		}
 		return res;
+	}
+	
+	
+	private Node<T> getLeastFrom(Node<T> node) {
+		while (node.left != null) {
+			node = node.left;
+		}
+		return node;
+	}
+	
+	private Node<T> getGreatestFrom(Node<T> node) {
+		while (node.right != null) {
+			node = node.left;
+		}
+		return node;
 	}
 
 }
