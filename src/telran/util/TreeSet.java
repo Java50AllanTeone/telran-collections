@@ -3,6 +3,8 @@ package telran.util;
 import java.util.Comparator;
 import java.util.Iterator;
 
+import telran.util.TreeSet.Node;
+
 @SuppressWarnings("unchecked")
 public class TreeSet<T> implements SortedSet<T> {
 	Node<T> root;
@@ -172,11 +174,11 @@ public class TreeSet<T> implements SortedSet<T> {
 	}
 	
 	
-	private Node<T> getLeastFrom(Node<T> node) {
-		while (node.left != null) {
-			node = node.left;
+	private Node<T> getLeastFrom(Node<T> current) {
+		while (current.left != null) {
+			current = current.left;
 		}
-		return node;
+		return current;
 	}
 	
 	private Node<T> getGreatestFrom(Node<T> node) {
@@ -184,6 +186,32 @@ public class TreeSet<T> implements SortedSet<T> {
 			node = node.left;
 		}
 		return node;
+	}
+	
+	 class TreeIterator<T> implements Iterator<T> {
+		Node<T> current;
+		
+		TreeIterator() {
+			this.current = getLeastFrom(current);
+		}
+
+		@Override
+		public boolean hasNext() {
+			// TODO Auto-generated method stub
+			return false;
+		}
+
+		@Override
+		public T next() {
+			// TODO Auto-generated method stub
+			return null;
+		}
+		
+		@Override
+		public void remove() {
+	
+		}
+		
 	}
 
 }
