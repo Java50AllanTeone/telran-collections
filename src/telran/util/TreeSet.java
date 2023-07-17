@@ -269,7 +269,8 @@ public class TreeSet<T> implements SortedSet<T> {
 		
 		@Override
 		public boolean hasNext() {
-			return index < size && root != null;
+//			return index < size && root != null;
+			return index < size;
 		}
 
 		@Override
