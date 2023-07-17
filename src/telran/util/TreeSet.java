@@ -50,20 +50,6 @@ public class TreeSet<T> implements SortedSet<T> {
 			return this.parent == null;
 		}
 			
-		
-//		private void removeNode(Node<T> node, Node<T> target) {
-//		if (node.isRoot()) {
-//			TreeSet.this.root = target;
-//		} else if (node.parent.left == node) {
-//			node.parent.left = target;
-//		} else {
-//			node.parent.right = target;
-//		}
-//		
-//		if (target != null) {
-//			target.parent = node.parent;
-//		}	
-//	}
 	}
 
 	@Override
@@ -182,7 +168,7 @@ public class TreeSet<T> implements SortedSet<T> {
 		if (root != null) {
 			res = getLeastFrom(root).obj;
 		}
-		return null;
+		return res;
 	}
 
 
@@ -195,22 +181,34 @@ public class TreeSet<T> implements SortedSet<T> {
 		if (root != null) {
 			res = getGreatestFrom(root).obj;
 		}
-		return null;
+		return res;
 	}
-
-
 
 
 	@Override
 	public T ceiling(T key) {
-		// TODO Auto-generated method stub
-		return null;
+		Node<T> node = getNode(key);
+		
+		if (node == null) {
+			node = getParent(key);
+		}
+		while (comp.compare(node.obj, key) < 0 && node.parent != null) {
+			node = node.parent;
+		}	
+		return comp.compare(node.obj, key) < 0 ? null : node.obj;
 	}
 
 	@Override
 	public T floor(T key) {
-		// TODO Auto-generated method stub
-		return null;
+		Node<T> node = getNode(key);
+		
+		if (node == null) {
+			node = getParent(key);
+		}
+		while (comp.compare(node.obj, key) > 0 && node.parent != null) {
+			node = node.parent;
+		}	
+		return comp.compare(node.obj, key) > 0 ? null : node.obj;
 	}
 	
 	
@@ -322,10 +320,5 @@ public class TreeSet<T> implements SortedSet<T> {
 			}
 			return next;
 		}
-
-
 	}
-	
-	 
-
 }
