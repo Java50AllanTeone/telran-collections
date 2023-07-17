@@ -299,6 +299,7 @@ public class TreeSet<T> implements SortedSet<T> {
 			next = getNext();
 			
 			TreeSet.this.remove(prev);
+			wasNext = false;
 			size--;
 			index--;
 		}
