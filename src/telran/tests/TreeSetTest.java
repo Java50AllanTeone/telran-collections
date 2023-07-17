@@ -1,15 +1,11 @@
 package telran.tests;
 
 import static org.junit.Assert.assertArrayEquals;
-import static org.junit.jupiter.api.Assertions.*;
 
 import java.util.Arrays;
 
 import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Test;
-
 import telran.util.Collection;
-import telran.util.HashSet;
 import telran.util.TreeSet;
 
 class TreeSetTest extends SetTest {
