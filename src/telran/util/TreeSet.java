@@ -191,13 +191,14 @@ public class TreeSet<T> implements SortedSet<T> {
 	
 	
 	class TreeIterator implements Iterator<T> {
+		int index = 0 ;
 		Node<T> next;
 		Node<T> prev;
 		boolean wasNext = false;
 		
 		@Override
 		public boolean hasNext() {
-			return root != null;
+			return index < size && root != null;
 		}
 
 		@Override
@@ -214,6 +215,7 @@ public class TreeSet<T> implements SortedSet<T> {
 			
 			prev = next;
 			wasNext = true;
+			index++;
 			return next.obj;
 		}
 		
@@ -225,46 +227,33 @@ public class TreeSet<T> implements SortedSet<T> {
 			}	
 			next = getNext();
 			
-			if (prev.left == null && prev.right == null) {
-				if (next == null) {
-					TreeSet.this.root = null;
-				} else {
-					removeNode(prev, null);
-				}
-			} else if (prev.left == null || prev.right == null) {
-				if (prev.parent == null) {
-					removeRoot(prev);
-				} else {
-					removeNode(prev, prev.right == null ? prev.left : prev.right);
-				}
+			if (isFullNode(prev)) {
+				prev = swapNode(prev);
+			}
+			
+			if (isMiddleNode(prev)) {
+				removeNode(prev, prev.right == null ? prev.left : prev.right);
 			} else {
-				removeNode(swapNode(prev), null);
+				removeNode(prev, null);
 			}
 			size--;
+			index--;
 		}
-		
-		private void removeRoot(Node<T> node) {		
-			Node<T> next;
-			if (node.right == null) {
-				next = node.left;
-				node.left = null;
-			} else {
-				next = node.right;
-				node.right = null;
-			}
-			next.parent = null;
-			TreeSet.this.root = next;
-		}
+
+
 		
 		private void removeNode(Node<T> node, Node<T> target) {
-			var prev = node.parent;
-			
-			if (prev.left == node) {
-				prev.left = target;
+			if (isRoot(node)) {
+				TreeSet.this.root = target;
+			} else if (node.parent.left == node) {
+				node.parent.left = target;
 			} else {
-				prev.right = target;
+				node.parent.right = target;
 			}
-			target.parent = prev;
+			
+			if (target != null) {
+				target.parent = node.parent;
+			}	
 		}
 		
 		private Node<T> swapNode(Node<T> node) {
@@ -274,19 +263,15 @@ public class TreeSet<T> implements SortedSet<T> {
 		}
 		
 		
-		
-		
-		
-		
 		private Node<T> getNext() {		
 			var next = prev;
 			
 			while (comp.compare(next.obj, prev.obj) <= 0) {
 				if (next.right == null || comp.compare(next.right.obj, prev.obj) <= 0) {
-					next = next.parent;
-					
-					if (next == null) {
-						return next;
+					if (next.parent == null) {
+						return next.parent;
+					} else {
+						next = next.parent;
 					}
 				} else {
 					next = getLeastFrom(next.right);
@@ -294,6 +279,21 @@ public class TreeSet<T> implements SortedSet<T> {
 			}
 			return next;
 		}
+		
+		
+		private boolean isFullNode(Node<T> node) {
+			return node.left != null && node.right != null;
+		}
+		
+		private boolean isMiddleNode(Node<T> node) {
+			return node.left == null | node.right == null;
+		}
+		
+		private boolean isRoot(Node<T> node) {
+			return node.parent == null;
+		}
+		
+
 	}
 	
 	 
