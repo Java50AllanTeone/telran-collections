@@ -13,7 +13,7 @@ import telran.util.ArrayList;
 import telran.util.Collection;
 
 abstract class CollectionTest {
-	static final int N_BIG_NUMBERS = 100_00;
+	static final int N_BIG_NUMBERS = 10_000;
 	static final int N_RUNS = 1000;
 	Integer[] arr = {1, 2, 3, 4, 5};
 	Collection<Integer> collection;

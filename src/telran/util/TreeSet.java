@@ -41,10 +41,7 @@ public class TreeSet<T> implements SortedSet<T> {
 		private boolean isFullNode() {
 			return this.left != null && this.right != null;
 		}
-		
-		private boolean isMiddleNode() {
-			return this.left == null | this.right == null;
-		}
+
 		
 		private boolean isRoot() {
 			return this.parent == null;
@@ -112,11 +109,7 @@ public class TreeSet<T> implements SortedSet<T> {
 			node = greatestFromLeast;
 		}
 		
-		if (node.isMiddleNode()) {
 			removeNode(node, node.right == null ? node.left : node.right);
-		} else {
-			removeNode(node, null);
-		}
 	}
 	
 	
@@ -269,7 +262,6 @@ public class TreeSet<T> implements SortedSet<T> {
 		
 		@Override
 		public boolean hasNext() {
-//			return index < size && root != null;
 			return index < size;
 		}
 
