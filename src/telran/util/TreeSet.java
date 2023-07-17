@@ -184,20 +184,20 @@ public class TreeSet<T> implements SortedSet<T> {
 	
 	private Node<T> getGreatestFrom(Node<T> node) {
 		while (node.right != null) {
-			node = node.left;
+			node = node.right;
 		}
 		return node;
 	}
 	
 	
 	class TreeIterator implements Iterator<T> {
-		int index = 0;
-		Node<T> next = getLeastFrom(root);
+		Node<T> next;
 		Node<T> prev;
+		boolean wasNext = false;
 		
 		@Override
 		public boolean hasNext() {
-			return index < size;
+			return root != null;
 		}
 
 		@Override
@@ -206,52 +206,73 @@ public class TreeSet<T> implements SortedSet<T> {
 				throw new NoSuchElementException();
 			}	
 			
-			if (next == prev) {
+			if (next == null) {
+				next = getLeastFrom(root);
+			} else if (next == prev) {
 				next = getNext();
 			}
+			
 			prev = next;
-			index++;
+			wasNext = true;
 			return next.obj;
 		}
 		
 		
-//		@Override
-//		public void remove() {
-//			if (!wasNext) {
-//				throw new IllegalStateException();
-//			}	
-//			var nodeToRemove = prev;
-//			
-//			if (prev.left != null && prev.right != null) {
-//				nodeToRemove = getGreatestFrom(prev.left);
-//				prev.obj = nodeToRemove.obj;
-//			} else {
-//				prev = next.parent;
-//				next = next.parent;
-//			}
-//			removeLinkedNode(nodeToRemove);
-//			wasNext = false;
-//			size--;
-//			indexSet--;
-//		}
-		
-		
-//		private void removeLinkedNode(Node<T> node) {
-//			if (prev != null) {
-//				var target = node.left == null ? node.right : node.left;
-//				
-//				if (target != null) {
-//					target.parent = node.parent;
-//				}
-//					
-//				if (node.parent.left == node) {
-//					node.parent.left = target;
-//				} else {
-//					node.parent.right = target;
-//				}
-//			}
+		@Override
+		public void remove() {
+			if (!wasNext) {
+			throw new IllegalStateException();
+			}	
+			next = getNext();
 			
-//		}
+			if (prev.left == null && prev.right == null) {
+				if (next == null) {
+					TreeSet.this.root = null;
+				} else {
+					removeNode(prev, null);
+				}
+			} else if (prev.left == null || prev.right == null) {
+				if (prev.parent == null) {
+					removeRoot(prev);
+				} else {
+					removeNode(prev, prev.right == null ? prev.left : prev.right);
+				}
+			} else {
+				removeNode(swapNode(prev), null);
+			}
+			size--;
+		}
+		
+		private void removeRoot(Node<T> node) {		
+			Node<T> next;
+			if (node.right == null) {
+				next = node.left;
+				node.left = null;
+			} else {
+				next = node.right;
+				node.right = null;
+			}
+			next.parent = null;
+			TreeSet.this.root = next;
+		}
+		
+		private void removeNode(Node<T> node, Node<T> target) {
+			var prev = node.parent;
+			
+			if (prev.left == node) {
+				prev.left = target;
+			} else {
+				prev.right = target;
+			}
+			target.parent = prev;
+		}
+		
+		private Node<T> swapNode(Node<T> node) {
+			var greatestFromLeast = getGreatestFrom(node.left);		
+			node.obj = greatestFromLeast.obj;
+			return greatestFromLeast;
+		}
+		
 		
 		private Node<T> getNext() {		
 			var next = prev;
@@ -259,13 +280,15 @@ public class TreeSet<T> implements SortedSet<T> {
 			while (comp.compare(next.obj, prev.obj) <= 0) {
 				if (next.right == null || comp.compare(next.right.obj, prev.obj) <= 0) {
 					next = next.parent;
+					
+					if (next == null) {
+						return next;
+					}
 				} else {
 					next = getLeastFrom(next.right);
 				}
 			}
 			return next;
-			
-			
 		}
 	}
 	
