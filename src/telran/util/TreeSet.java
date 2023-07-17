@@ -108,7 +108,6 @@ public class TreeSet<T> implements SortedSet<T> {
 			node.swapNode(greatestFromLeast);
 			node = greatestFromLeast;
 		}
-		
 			removeNode(node, node.right == null ? node.left : node.right);
 	}
 	
