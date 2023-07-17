@@ -31,6 +31,39 @@ public class TreeSet<T> implements SortedSet<T> {
 		Node(T obj) {
 			this.obj = obj;
 		}
+		
+		private void swapNode(Node<T> node) {	
+			var temp = this.obj;
+			this.obj = node.obj;
+			node.obj = temp;
+	}
+		
+		private boolean isFullNode() {
+			return this.left != null && this.right != null;
+		}
+		
+		private boolean isMiddleNode() {
+			return this.left == null | this.right == null;
+		}
+		
+		private boolean isRoot() {
+			return this.parent == null;
+		}
+			
+		
+//		private void removeNode(Node<T> node, Node<T> target) {
+//		if (node.isRoot()) {
+//			TreeSet.this.root = target;
+//		} else if (node.parent.left == node) {
+//			node.parent.left = target;
+//		} else {
+//			node.parent.right = target;
+//		}
+//		
+//		if (target != null) {
+//			target.parent = node.parent;
+//		}	
+//	}
 	}
 
 	@Override
@@ -75,9 +108,45 @@ public class TreeSet<T> implements SortedSet<T> {
 
 	@Override
 	public boolean remove(Object pattern) {
-		// TODO Auto-generated method stub
-		return false;
+		var node = getNode((T)pattern);
+		
+		if (node == null)
+			return false;
+		
+		remove(node);
+		size--;	
+		return true;
 	}
+	
+	
+	private void remove(Node<T> node) {
+		if (node.isFullNode()) {
+			var greatestFromLeast = getGreatestFrom(node.left);	
+			node.swapNode(greatestFromLeast);
+			node = greatestFromLeast;
+		}
+		
+		if (node.isMiddleNode()) {
+			removeNode(node, node.right == null ? node.left : node.right);
+		} else {
+			removeNode(node, null);
+		}
+	}
+	
+	
+	private void removeNode(Node<T> node, Node<T> target) {
+	if (node.isRoot()) {
+		this.root = target;
+	} else if (node.parent.left == node) {
+		node.parent.left = target;
+	} else {
+		node.parent.right = target;
+	}
+	
+	if (target != null) {
+		target.parent = node.parent;
+	}	
+}
 
 	@Override
 	public boolean contains(Object pattern) {
@@ -87,14 +156,18 @@ public class TreeSet<T> implements SortedSet<T> {
 
 	@Override
 	public int size() {
-		// TODO Auto-generated method stub
-		return 0;
+		return size;
 	}
 
 	@Override
 	public Object[] toArray() {
-		// TODO Auto-generated method stub
-		return null;
+		Object[] array = new Object[size];
+		var it = this.iterator();
+		
+		for (int i = 0; i < array.length; i++) {
+			array[i] = it.next();
+		}
+		return array;
 	}
 
 	@Override
@@ -227,41 +300,11 @@ public class TreeSet<T> implements SortedSet<T> {
 			}	
 			next = getNext();
 			
-			if (isFullNode(prev)) {
-				prev = swapNode(prev);
-			}
-			
-			if (isMiddleNode(prev)) {
-				removeNode(prev, prev.right == null ? prev.left : prev.right);
-			} else {
-				removeNode(prev, null);
-			}
+			TreeSet.this.remove(prev);
 			size--;
 			index--;
 		}
 
-
-		
-		private void removeNode(Node<T> node, Node<T> target) {
-			if (isRoot(node)) {
-				TreeSet.this.root = target;
-			} else if (node.parent.left == node) {
-				node.parent.left = target;
-			} else {
-				node.parent.right = target;
-			}
-			
-			if (target != null) {
-				target.parent = node.parent;
-			}	
-		}
-		
-		private Node<T> swapNode(Node<T> node) {
-			var greatestFromLeast = getGreatestFrom(node.left);		
-			node.obj = greatestFromLeast.obj;
-			return greatestFromLeast;
-		}
-		
 		
 		private Node<T> getNext() {		
 			var next = prev;
@@ -279,20 +322,7 @@ public class TreeSet<T> implements SortedSet<T> {
 			}
 			return next;
 		}
-		
-		
-		private boolean isFullNode(Node<T> node) {
-			return node.left != null && node.right != null;
-		}
-		
-		private boolean isMiddleNode(Node<T> node) {
-			return node.left == null | node.right == null;
-		}
-		
-		private boolean isRoot(Node<T> node) {
-			return node.parent == null;
-		}
-		
+
 
 	}
 	
