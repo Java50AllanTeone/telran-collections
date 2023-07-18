@@ -230,19 +230,19 @@ public class ArrayList<T> implements List<T>, Iterable<T> {
 		return new ArrayList<>(this);
 	}
 
-	@Override
-	public boolean equals(Object obj) {
-		if (this == obj)
-			return true;
-		if (obj == null)
-			return false;
-		if (getClass() != obj.getClass())
-			return false;
-		ArrayList<T> other = (ArrayList<T>) obj;
-		return size == other.size
-				//copyOf for test
-				&&  Arrays.deepEquals(Arrays.copyOf(array, size), Arrays.copyOf(other.array, size));
-	}
+//	@Override
+//	public boolean equals(Object obj) {
+//		if (this == obj)
+//			return true;
+//		if (obj == null)
+//			return false;
+//		if (getClass() != obj.getClass())
+//			return false;
+//		ArrayList<T> other = (ArrayList<T>) obj;
+//		return size == other.size
+//				//copyOf for test
+//				&&  Arrays.deepEquals(Arrays.copyOf(array, size), Arrays.copyOf(other.array, size));
+//	}
 
 	@Override
 	public String toString() {
@@ -285,6 +285,17 @@ public class ArrayList<T> implements List<T>, Iterable<T> {
 	
 	public void setSize(int size) {
 		this.size = size;
+	}
+	
+	
+	
+	
+	
+	
+	
+	@Override
+	public boolean equals(Object obj) {
+		return listEquals(obj);
 	}
 
 }

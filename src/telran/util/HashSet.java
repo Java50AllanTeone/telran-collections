@@ -205,4 +205,15 @@ public class HashSet<T> implements Set<T> {
 		hashTable = tmp.hashTable;
 	}
 
+	@Override
+	public boolean retainAll(Set<?> set) {
+		// TODO Auto-generated method stub
+		return false;
+	}
+	
+	@Override
+	public boolean equals(Object obj) {
+		return setEquals(obj);
+	}
+
 }

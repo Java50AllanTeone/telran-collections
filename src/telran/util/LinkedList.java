@@ -313,6 +313,11 @@ public class LinkedList<T> implements List<T> {
 		}
 		
 	}
+	
+	@Override
+	public boolean equals(Object obj) {
+		return listEquals(obj);
+	}
 
 
 }

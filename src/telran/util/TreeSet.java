@@ -314,4 +314,17 @@ public class TreeSet<T> implements SortedSet<T> {
 			return next;
 		}
 	}
+
+	@Override
+	public boolean retainAll(Set<?> set) {
+		// TODO Auto-generated method stub
+		return false;
+	}
+	
+	@Override
+	public boolean equals(Object obj) {
+		return setEquals(obj);
+	}
+
+
 }
