@@ -179,6 +179,8 @@ public class TreeSet<T> implements SortedSet<T> {
 
 	@Override
 	public T ceiling(T key) {
+		if (root == null)
+			return null;
 		Node<T> node = getNode(key);
 		
 		if (node == null) {
@@ -192,6 +194,8 @@ public class TreeSet<T> implements SortedSet<T> {
 
 	@Override
 	public T floor(T key) {
+		if (root == null)
+			return null;
 		Node<T> node = getNode(key);
 		
 		if (node == null) {
