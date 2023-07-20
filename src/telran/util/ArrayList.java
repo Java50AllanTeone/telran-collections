@@ -7,7 +7,7 @@ import java.util.Objects;
 import java.util.function.Predicate;
 import java.util.function.UnaryOperator;
 
-public class ArrayList<T> implements List<T>, Iterable<T> {
+public class ArrayList<T> implements List<T>, Iterable<T>, Cloneable {
 	private static final int DEFAULT_CAPACITY = 16;
 	T[] array;
 	private int size = 0;
@@ -226,24 +226,6 @@ public class ArrayList<T> implements List<T>, Iterable<T> {
 		}
 	}
 
-	public Object clone() {
-		return new ArrayList<>(this);
-	}
-
-//	@Override
-//	public boolean equals(Object obj) {
-//		if (this == obj)
-//			return true;
-//		if (obj == null)
-//			return false;
-//		if (getClass() != obj.getClass())
-//			return false;
-//		ArrayList<T> other = (ArrayList<T>) obj;
-//		return size == other.size
-//				//copyOf for test
-//				&&  Arrays.deepEquals(Arrays.copyOf(array, size), Arrays.copyOf(other.array, size));
-//	}
-
 	@Override
 	public String toString() {
 		return "[" + Arrays.toString(array) + ", size=" + size + "]";
@@ -288,14 +270,25 @@ public class ArrayList<T> implements List<T>, Iterable<T> {
 	}
 	
 	
-	
-	
-	
-	
-	
 	@Override
 	public boolean equals(Object obj) {
-		return listEquals(obj);
+		return listEqualsTo(obj);
 	}
+
+	//new array
+	@Override
+	public Object clone() {
+		return new ArrayList<T>(this);
+	}
+	
+	
+//	old array
+//	@Override
+//	public Object clone() {
+//		var target = new ArrayList<T>();
+//		target.array = this.array;
+//		target.size = size();
+//		return target;
+//	}
 
 }

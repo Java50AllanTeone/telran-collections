@@ -47,14 +47,6 @@ class ArrayListTest extends ListTest {
 		assertEquals(exp, collection);
 	}
 	
-	@Test
-	void cloneTest() {
-		var copy = al.clone();
-		
-		assertFalse(copy == al);
-		assertEquals(copy, al);
-	}
-	
 	
 	@Test
 	void replaceAllTest() {

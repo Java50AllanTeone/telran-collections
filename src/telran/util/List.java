@@ -41,10 +41,13 @@ public interface List<T> extends Collection<T> {
 		}
 	}
 	
-	default boolean listEquals(Object obj) {
-		//TODO
-		//Checks all elements are in same order using iteration
-		return false;
+	
+	default boolean listEqualsTo(Object other) {
+		try {
+			return this.equalsTo((List<?>) other);
+		} catch (ClassCastException e) {
+			return false;
+		}
 	}
 	
 	

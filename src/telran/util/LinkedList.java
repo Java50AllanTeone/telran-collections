@@ -6,10 +6,17 @@ import java.util.NoSuchElementException;
 import java.util.Objects;
 import java.util.function.Predicate;
 
-public class LinkedList<T> implements List<T> {
+public class LinkedList<T> implements List<T>, Cloneable {
 	private Node<T> head;
 	private Node<T> tail;
 	private int size;
+	
+	public LinkedList() {
+	}
+	
+	public LinkedList(Collection<T> collection) {
+		addAll(collection);
+	}
 	
 	private static class Node<T> {
 		T obj;
@@ -316,8 +323,24 @@ public class LinkedList<T> implements List<T> {
 	
 	@Override
 	public boolean equals(Object obj) {
-		return listEquals(obj);
+		return listEqualsTo(obj);
 	}
+
+	//new nodes
+	@Override
+	public Object clone() {
+		return new LinkedList<T>(this);
+	}
+	
+	//old nodes
+//	@Override
+//	public Object clone() {
+//		var target =  new LinkedList<T>();
+//		target.head = this.head;
+//		target.tail = this.tail;
+//		target.size = size();
+//		return target;
+//	}
 
 
 }

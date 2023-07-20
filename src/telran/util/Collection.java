@@ -2,6 +2,7 @@ package telran.util;
 
 import java.util.Arrays;
 import java.util.Iterator;
+import java.util.Objects;
 import java.util.function.Predicate;
 
 public interface Collection<T> extends Iterable<T> {
@@ -82,6 +83,26 @@ public interface Collection<T> extends Iterable<T> {
 	
 	default boolean isEmpty() {
 		return size() == 0;
+	}
+	
+	
+	default boolean equalsTo(Collection<?> other) {
+		if (this == other)
+			return true;
+		
+		if (other == null)
+			return false;
+		
+		if (this.size() != other.size())
+			return false;
+
+		var it = other.iterator();
+				
+		for (var e : this) {
+			if (!Objects.equals(e, it.next()))
+				return false;
+		}
+		return true;
 	}
 	
 	

@@ -5,7 +5,7 @@ import java.util.NoSuchElementException;
 import java.util.Objects;
 
 
-public class HashSet<T> implements Set<T> {
+public class HashSet<T> implements Set<T>, Cloneable {
 	private static final int DEFAULT_TABLE_LENGTH = 16;
 	public LinkedList<T>[] hashTable;
 	private float factor = 0.75f;
@@ -14,6 +14,11 @@ public class HashSet<T> implements Set<T> {
 	@SuppressWarnings("unchecked")
 	public HashSet(int tableLength) {
 		hashTable = new LinkedList[tableLength];
+	}
+	
+	public HashSet(Collection<T> collection) {
+		this();
+		addAll(collection);
 	}
 	
 	public HashSet() {
@@ -204,16 +209,26 @@ public class HashSet<T> implements Set<T> {
 		}
 		hashTable = tmp.hashTable;
 	}
-
-	@Override
-	public boolean retainAll(Set<?> set) {
-		// TODO Auto-generated method stub
-		return false;
-	}
 	
 	@Override
 	public boolean equals(Object obj) {
-		return setEquals(obj);
+		return setEqualsTo(obj);
 	}
+
+	//new array
+	@Override
+	public Object clone() {
+		return new HashSet<T>(this);
+	}
+	
+	
+//	old hashTable
+//	@Override
+//	public Object clone() {
+//		var target = new HashSet<T>();
+//		target.hashTable = this.hashTable;
+//		target.size = size();
+//		return target;
+//	}
 
 }

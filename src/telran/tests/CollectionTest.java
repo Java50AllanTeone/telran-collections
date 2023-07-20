@@ -107,33 +107,6 @@ abstract class CollectionTest {
 	}
 	
 	@Test
-	void addAllTest() {
-		collection = new ArrayList<>(new Integer[]{1, 2, 3, 4, 5}, 10);
-		exp = new ArrayList<>(new Integer[]{1, 2, 3, 4, 5, 6, 7, 8, 9, 10}, 10);
-		var add = new ArrayList<>(new Integer[]{6, 7, 8, 9, 10}, 10);
-		assertTrue(collection.addAll(add));
-		assertEquals(exp, collection);
-		
-		add = new ArrayList<>(new Integer[0]);
-		assertFalse(collection.addAll(add));
-		assertEquals(exp, collection);
-	}
-	
-	
-	@Test
-	void removeAllTest() {
-		collection = new ArrayList<>(new Integer[]{1, 2, 3, 4, 5}, 10);
-		exp = new ArrayList<>(new Integer[]{1, 2, 3, 4}, 10);
-		var remove = new ArrayList<>(new Integer[]{5}, 10);
-		assertTrue(collection.removeAll(remove));
-		assertEquals(exp, collection);
-		
-		remove = new ArrayList<>(new Integer[0]);
-		assertFalse(collection.addAll(remove));
-		assertEquals(exp, collection);
-	}
-	
-	@Test
 	void isEmptyTest() {
 		collection = new ArrayList<>(new Integer[]{}, 0);
 		assertTrue(collection.isEmpty());

@@ -6,13 +6,18 @@ import java.util.NoSuchElementException;
 
 
 @SuppressWarnings("unchecked")
-public class TreeSet<T> implements SortedSet<T> {
+public class TreeSet<T> implements SortedSet<T>, Cloneable {
 	Node<T> root;
 	int size;
 	Comparator<T> comp;
 	
 	public TreeSet(Comparator<T> comp) {
 		this.comp = comp;
+	}
+	
+	public TreeSet(Collection<T> collection) {
+		this();
+		addAll(collection);
 	}
 	
 
@@ -179,28 +184,44 @@ public class TreeSet<T> implements SortedSet<T> {
 
 	@Override
 	public T ceiling(T key) {
-		Node<T> node = getNode(key);
-		
-		if (node == null) {
-			node = getParent(key);
+		// returns element if exists or nearest greater element
+		Node<T> node = null;
+		if (root != null) {
+			node = getParentOrNode(key); // never null
+			int compRes = comp.compare(key, node.obj);
+			if (compRes >  0) {
+				node = getGreaterParent(node);
+			}						
 		}
-		while (comp.compare(node.obj, key) < 0 && node.parent != null) {
-			node = node.parent;
-		}	
-		return comp.compare(node.obj, key) < 0 ? null : node.obj;
+		return node == null ? null : node.obj;
 	}
 
 	@Override
 	public T floor(T key) {
-		Node<T> node = getNode(key);
-		
-		if (node == null) {
-			node = getParent(key);
+		// returns element if exists or nearest less element
+		Node<T> node = null;
+		if (root != null) {
+			node = getParentOrNode(key); // never null
+			int compRes = comp.compare(key, node.obj);
+			if (compRes <  0) {
+				node = getLessParent(node);
+			}						
 		}
-		while (comp.compare(node.obj, key) > 0 && node.parent != null) {
+		return node == null ? null : node.obj;
+	}
+	
+	private Node<T> getGreaterParent(Node<T> node) {
+		while (node.parent != null && node.parent.left != node) {
 			node = node.parent;
-		}	
-		return comp.compare(node.obj, key) > 0 ? null : node.obj;
+		}
+		return node.parent;
+	}
+
+	private Node<T> getLessParent(Node<T> node) {
+		while (node.parent != null && node.parent.right != node) {
+			node = node.parent;
+		}
+		return node.parent;
 	}
 	
 	
@@ -214,6 +235,19 @@ public class TreeSet<T> implements SortedSet<T> {
 			current = compRes < 0 ? current.left : current.right;
 		}
 		return current == null ? parent : current;
+	}
+	
+	@SuppressWarnings("rawtypes")
+	private Node[] getParentAndNode(T key) {
+		Node<T> current = root;
+		Node<T> parent = null;
+		int compRes;
+		
+		while (current != null && (compRes = comp.compare(key, current.obj)) != 0) {
+			parent = current;
+			current = compRes < 0 ? current.left : current.right;
+		}
+		return new Node[] {parent, current};
 	}
 	
 	
@@ -273,7 +307,7 @@ public class TreeSet<T> implements SortedSet<T> {
 			if (next == null) {
 				next = getLeastFrom(root);
 			} else if (next == prev) {
-				next = getNext();
+				next = getNext(prev);
 			}
 			
 			prev = next;
@@ -288,42 +322,116 @@ public class TreeSet<T> implements SortedSet<T> {
 			if (!wasNext) {
 			throw new IllegalStateException();
 			}	
-			next = getNext();
+			next = getNext(prev);
 			
 			TreeSet.this.remove(prev);
 			wasNext = false;
 			size--;
 			index--;
 		}
-
-		
-		private Node<T> getNext() {		
-			var next = prev;
-			
-			while (comp.compare(next.obj, prev.obj) <= 0) {
-				if (next.right == null || comp.compare(next.right.obj, prev.obj) <= 0) {
-					if (next.parent == null) {
-						return next.parent;
-					} else {
-						next = next.parent;
-					}
-				} else {
-					next = getLeastFrom(next.right);
-				}
-			}
-			return next;
-		}
-	}
-
-	@Override
-	public boolean retainAll(Set<?> set) {
-		// TODO Auto-generated method stub
-		return false;
 	}
 	
 	@Override
 	public boolean equals(Object obj) {
-		return setEquals(obj);
+		return setEqualsTo(obj);
+	}
+	
+	//new nodes
+	@Override
+	public Object clone() {
+		return new TreeSet<T>(this);
+	}
+	
+	
+	//old nodes
+//	@Override
+//	public Object clone() {
+//		var target = new TreeSet<T>();
+//		target.root = this.root;
+//		target.size = size();
+//		return target;
+//	}
+
+	
+	@Override
+	public SortedSet<T> headSetCopy(T toElement, boolean inclusive) {
+		TreeSet<T> target = new TreeSet<>();
+		
+		if (size() == 0) {
+			return target;
+		}	
+		for (var elem : this) {
+			var compRes = comp.compare(elem, toElement);
+			
+			if (inclusive ? compRes > 0 : compRes >= 0) {
+				break;
+			}
+			target.add(elem);
+		}
+		return target;
+	}
+	
+
+	@Override
+	public SortedSet<T> tailSetCopy(T fromElement, boolean inclusive) {
+		TreeSet<T> target = new TreeSet<>();
+		
+		if (size() == 0)
+			return target;
+			
+		var parentAndCurrent = getParentAndNode(fromElement);
+		Node<T> fromNode = inclusive && parentAndCurrent[1] != null ? parentAndCurrent[1] : parentAndCurrent[0];
+		
+		do {
+			target.add(fromNode.obj);
+			fromNode = getNext(fromNode);
+			
+		} while(fromNode != null);
+			
+		return target;
+	}
+		
+
+	@Override
+	public SortedSet<T> subSetCopy(T fromElement, boolean fromInclusive, T toElement, boolean toInclusive) {
+		TreeSet<T> target = new TreeSet<>();
+		
+		if (size() == 0)
+			return target;
+		
+		var parentAndCurrent = getParentAndNode(fromElement);
+		Node<T> fromNode = fromInclusive && parentAndCurrent[1] != null ? parentAndCurrent[1] : parentAndCurrent[0];
+		parentAndCurrent = getParentAndNode(toElement);
+		Node<T> toNode = parentAndCurrent[1] != null ? parentAndCurrent[1] : parentAndCurrent[0];
+		
+		do {
+			target.add(fromNode.obj);
+			fromNode = getNext(fromNode);
+			
+		} while(fromNode != toNode);
+		
+		if (toInclusive)
+			target.add(fromNode.obj);
+			
+		return target;
+	}
+	
+	
+	private Node<T> getNext(Node<T> prev) {		
+		var next = prev;
+		
+		while (comp.compare(next.obj, prev.obj) <= 0) {
+			if (next.right == null || comp.compare(next.right.obj, prev.obj) <= 0) {
+				if (next.parent == null) {
+					return next.parent;
+				} else {
+					next = next.parent;
+				}
+			} else {
+				next = getLeastFrom(next.right);
+			}
+		}
+		return next;
 	}
 
 
