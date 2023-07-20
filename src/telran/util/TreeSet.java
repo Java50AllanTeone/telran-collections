@@ -184,6 +184,12 @@ public class TreeSet<T> implements SortedSet<T>, Cloneable {
 
 	@Override
 	public T ceiling(T key) {
+		var res = ceilingNode(key);
+		return res == null ? null : res.obj;
+	}
+	
+
+	public Node<T> ceilingNode(T key) {
 		// returns element if exists or nearest greater element
 		Node<T> node = null;
 		if (root != null) {
@@ -193,12 +199,17 @@ public class TreeSet<T> implements SortedSet<T>, Cloneable {
 				node = getGreaterParent(node);
 			}						
 		}
-		return node == null ? null : node.obj;
+		return node;
 	}
 
 	@Override
 	public T floor(T key) {
-		// returns element if exists or nearest less element
+		var res = floorNode(key);
+		return res == null ? null : res.obj;
+	}
+	
+
+	public Node<T> floorNode(T key) {
 		Node<T> node = null;
 		if (root != null) {
 			node = getParentOrNode(key); // never null
@@ -207,8 +218,11 @@ public class TreeSet<T> implements SortedSet<T>, Cloneable {
 				node = getLessParent(node);
 			}						
 		}
-		return node == null ? null : node.obj;
+		return node;
 	}
+	
+	
+	
 	
 	private Node<T> getGreaterParent(Node<T> node) {
 		while (node.parent != null && node.parent.left != node) {
@@ -378,9 +392,12 @@ public class TreeSet<T> implements SortedSet<T>, Cloneable {
 		
 		if (size() == 0)
 			return target;
-			
-		var parentAndCurrent = getParentAndNode(fromElement);
-		Node<T> fromNode = inclusive && parentAndCurrent[1] != null ? parentAndCurrent[1] : parentAndCurrent[0];
+	
+		var fromNode = this.ceilingNode(fromElement);
+		
+		if (fromNode.obj.equals(fromElement) && !inclusive) {
+			fromNode = getNext(fromNode);
+		}
 		
 		do {
 			target.add(fromNode.obj);
@@ -399,10 +416,13 @@ public class TreeSet<T> implements SortedSet<T>, Cloneable {
 		if (size() == 0)
 			return target;
 		
-		var parentAndCurrent = getParentAndNode(fromElement);
-		Node<T> fromNode = fromInclusive && parentAndCurrent[1] != null ? parentAndCurrent[1] : parentAndCurrent[0];
-		parentAndCurrent = getParentAndNode(toElement);
-		Node<T> toNode = parentAndCurrent[1] != null ? parentAndCurrent[1] : parentAndCurrent[0];
+		var fromNode = this.ceilingNode(fromElement);
+		var toNode = this.floorNode(toElement);
+		
+		if (fromNode.obj.equals(fromElement) && !fromInclusive) {
+			fromNode = getNext(fromNode);
+			
+		}
 		
 		do {
 			target.add(fromNode.obj);
@@ -410,8 +430,9 @@ public class TreeSet<T> implements SortedSet<T>, Cloneable {
 			
 		} while(fromNode != toNode);
 		
-		if (toInclusive)
-			target.add(fromNode.obj);
+//		if (toInclusive || toNode.obj.equals(toElement))
+//			target.add(fromNode.obj);
+		//TODO
 			
 		return target;
 	}
