@@ -105,6 +105,8 @@ public interface Collection<T> extends Iterable<T> {
 		return true;
 	}
 	
+	Object clone() throws CloneNotSupportedException;
+	
 	
 	
 

@@ -167,6 +167,19 @@ abstract class CollectionTest {
 		assertThrowsExactly(NoSuchElementException.class, it::next);
 	}
 	
+	@Test
+	void cloneTest() throws Exception {
+		@SuppressWarnings("unchecked")
+		Collection<Integer>collection2 = (Collection<Integer>)collection.clone();
+		assertEquals(collection, collection2);
+		collection2.remove(arr[0]);
+		assertFalse(collection2.contains(arr[0]));
+		assertTrue(collection.contains(arr[0]));
+		collection2.add(200);
+		assertTrue(collection2.contains(200));
+		assertFalse(collection.contains(200));
+	}
+	
 	
 	private Integer[] getBigArray() {
 		Integer[] res = new Integer[N_BIG_NUMBERS];
