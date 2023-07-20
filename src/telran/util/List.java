@@ -41,7 +41,7 @@ public interface List<T> extends Collection<T> {
 		}
 	}
 	
-	default public boolean listEquals(Object obj) {
+	default boolean listEquals(Object obj) {
 		//TODO
 		//Checks all elements are in same order using iteration
 		return false;
