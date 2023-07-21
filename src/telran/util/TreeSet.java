@@ -189,8 +189,7 @@ public class TreeSet<T> implements SortedSet<T>, Cloneable {
 	}
 	
 
-	public Node<T> ceilingNode(T key) {
-		// returns element if exists or nearest greater element
+	private Node<T> ceilingNode(T key) {
 		Node<T> node = null;
 		if (root != null) {
 			node = getParentOrNode(key); // never null
@@ -209,7 +208,7 @@ public class TreeSet<T> implements SortedSet<T>, Cloneable {
 	}
 	
 
-	public Node<T> floorNode(T key) {
+	private Node<T> floorNode(T key) {
 		Node<T> node = null;
 		if (root != null) {
 			node = getParentOrNode(key); // never null
@@ -249,19 +248,6 @@ public class TreeSet<T> implements SortedSet<T>, Cloneable {
 			current = compRes < 0 ? current.left : current.right;
 		}
 		return current == null ? parent : current;
-	}
-	
-	@SuppressWarnings("rawtypes")
-	private Node[] getParentAndNode(T key) {
-		Node<T> current = root;
-		Node<T> parent = null;
-		int compRes;
-		
-		while (current != null && (compRes = comp.compare(key, current.obj)) != 0) {
-			parent = current;
-			current = compRes < 0 ? current.left : current.right;
-		}
-		return new Node[] {parent, current};
 	}
 	
 	
@@ -355,57 +341,17 @@ public class TreeSet<T> implements SortedSet<T>, Cloneable {
 	public Object clone() {
 		return new TreeSet<T>(this);
 	}
-	
-	
-	//old nodes
-//	@Override
-//	public Object clone() {
-//		var target = new TreeSet<T>();
-//		target.root = this.root;
-//		target.size = size();
-//		return target;
-//	}
 
 	
 	@Override
 	public SortedSet<T> headSetCopy(T toElement, boolean inclusive) {
-		TreeSet<T> target = new TreeSet<>();
-		
-		if (size() == 0) {
-			return target;
-		}	
-		for (var elem : this) {
-			var compRes = comp.compare(elem, toElement);
-			
-			if (inclusive ? compRes > 0 : compRes >= 0) {
-				break;
-			}
-			target.add(elem);
-		}
-		return target;
+		return subSetCopy(first(), true, toElement, inclusive);
 	}
 	
 
 	@Override
 	public SortedSet<T> tailSetCopy(T fromElement, boolean inclusive) {
-		TreeSet<T> target = new TreeSet<>();
-		
-		if (size() == 0)
-			return target;
-	
-		var fromNode = this.ceilingNode(fromElement);
-		
-		if (fromNode.obj.equals(fromElement) && !inclusive) {
-			fromNode = getNext(fromNode);
-		}
-		
-		do {
-			target.add(fromNode.obj);
-			fromNode = getNext(fromNode);
-			
-		} while(fromNode != null);
-			
-		return target;
+		return subSetCopy(fromElement, inclusive, last(), true);
 	}
 		
 
@@ -417,11 +363,9 @@ public class TreeSet<T> implements SortedSet<T>, Cloneable {
 			return target;
 		
 		var fromNode = this.ceilingNode(fromElement);
-		var toNode = this.floorNode(toElement);
-		
-		if (fromNode.obj.equals(fromElement) && !fromInclusive) {
-			fromNode = getNext(fromNode);
-			
+		var toNode = this.floorNode(toElement);	
+		if (comp.compare(fromNode.obj, fromElement) == 0 && !fromInclusive) {
+			fromNode = getNext(fromNode);		
 		}
 		
 		do {
@@ -430,10 +374,8 @@ public class TreeSet<T> implements SortedSet<T>, Cloneable {
 			
 		} while(fromNode != toNode);
 		
-//		if (toInclusive || toNode.obj.equals(toElement))
-//			target.add(fromNode.obj);
-		//TODO
-			
+		if (comp.compare(fromNode.obj, toElement) != 0 || toInclusive)
+			target.add(fromNode.obj);
 		return target;
 	}
 	
