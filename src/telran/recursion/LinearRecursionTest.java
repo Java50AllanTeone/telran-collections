@@ -33,17 +33,17 @@ class LinearRecursionTest {
 	
 	@Test
 	void displayArrayTest() {
-		System.out.println("\nDiaplaying range [1-5]");
+//		System.out.println("\nDiaplaying range [1-5]");
 		int ar[] = {1, 2, 3, 4, 5};
-		displayArray(ar);
+//		displayArray(ar);
 	}
 	
 	
 	@Test
 	void displayArrayReverseTest() {
-		System.out.println("\nDiaplaying reversed range [1-5]");
+//		System.out.println("\nDiaplaying reversed range [1-5]");
 		int ar[] = {1, 2, 3, 4, 5};
-		displayReversedArray(ar);
+//		displayReversedArray(ar);
 	}
 	
 	
@@ -63,11 +63,12 @@ class LinearRecursionTest {
 	}
 	
 	
-//	@Test
-//	void squareTest() {
-//		assertEquals(100, square(10));
-//		assertEquals(100, square(-10));
-//	}
+	@Test
+	void squareTest() {
+		assertEquals(100, square(10));
+		assertEquals(100, square(-10));
+
+	}
 	
 	
 	@Test

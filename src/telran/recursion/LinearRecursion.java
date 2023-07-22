@@ -88,14 +88,10 @@ public class LinearRecursion {
 	}
 
 	public static int square(int x) {
-		// TODO
-		// returns x ^ 2
-		// With following limitations
-		// No cycles
-		// No any additional methods
-		// No static fields
-		// Only + ; - arithmetic operations
-		return 0;
+		if (x < 0) {
+			x = -x;
+		}
+		return x > 0 ? x + square(x - 1) + x - 1 : 0;
 	}
 
 
