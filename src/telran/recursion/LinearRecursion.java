@@ -23,21 +23,15 @@ public class LinearRecursion {
 	}
 
 	public static long pow(int a, int b) {
-//		long res = 1;
-//		if (b < 0) {
-//			throw new IllegalArgumentException("degree cannot be a negative");
-//		}
-//		if (b > 0) {
-//			res = a * pow(a, b - 1);
-//		}
-//		return res;
-		// TODO
-		// HW #17 definition
-		// Write method pow with following limitations
-		// No cycles
-		// Arithmetic operations allowed +; - only
-		// if Additional functions applied then only with the same limitations
-		return 0;
+		long res = 1;
+		if (b < 0) {
+			throw new IllegalArgumentException("degree cannot be a negative");
+		}
+		if (b > 0) {
+			res = a * pow(a, b - 1);
+		}
+		return res;
+
 	}
 
 	public static void displayArray(int[] ar) {

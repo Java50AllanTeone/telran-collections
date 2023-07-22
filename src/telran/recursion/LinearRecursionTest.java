@@ -22,13 +22,13 @@ class LinearRecursionTest {
 		assertEquals(24, factorial(4));
 	}
 	
-//	@Test
-//	void powTest() {
-//		assertThrowsExactly(IllegalArgumentException.class, ()-> pow(10, -3));
-//		assertEquals(-1000, pow(-10, 3));
-//		assertEquals(100, pow(-10, 2));
-//		assertEquals(1000, pow(10, 3));
-//	}
+	@Test
+	void powTest() {
+		assertThrowsExactly(IllegalArgumentException.class, ()-> pow(10, -3));
+		assertEquals(-1000, pow(-10, 3));
+		assertEquals(100, pow(-10, 2));
+		assertEquals(1000, pow(10, 3));
+	}
 	
 	
 	@Test
