@@ -22,17 +22,52 @@ public class LinearRecursion {
 		return res;
 	}
 
+//	public static long pow(int a, int b) {
+//		long res = 1;
+//		if (b < 0) {
+//			throw new IllegalArgumentException("degree cannot be a negative");
+//		}
+//		if (b > 0) {
+//			res = a * pow(a, b - 1);
+//		}
+//		return res;
+//	}
+	
+	
 	public static long pow(int a, int b) {
 		long res = 1;
-		if (b < 0) {
+		
+		if (b < 0)
 			throw new IllegalArgumentException("degree cannot be a negative");
-		}
-		if (b > 0) {
-			res = a * pow(a, b - 1);
-		}
-		return res;
-
+		if (b > 0)
+			res = multAbs(a, pow(a, b - 1));
+		return a < 0 && b % 2 != 0 ? -res : res;
 	}
+	
+	
+	public static long multAbs(long x, long y) {
+		if (y < 0) 
+			y = -y;
+		if (x < 0) 
+			x = -x;
+		if (y > 1) 
+			x += multAbs(x, y - 1);
+		return x;
+	}
+	
+	
+	
+	
+	
+	
+	public static int square(int x) {
+		if (x < 0) {
+			x = -x;
+		}
+		return x > 0 ? x + square(x - 1) + x - 1 : 0;
+	}
+	
+	
 
 	public static void displayArray(int[] ar) {
 		displayArray(0, ar, false);
@@ -81,12 +116,7 @@ public class LinearRecursion {
 
 	}
 
-	public static int square(int x) {
-		if (x < 0) {
-			x = -x;
-		}
-		return x > 0 ? x + square(x - 1) + x - 1 : 0;
-	}
+
 
 
 	public static boolean isSubstring(String string, String substr) {
