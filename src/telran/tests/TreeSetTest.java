@@ -124,7 +124,9 @@ class TreeSetTest extends SetTest {
 			array[i] = i;
 		}
 		
-		array = reorderArray(array);
+//		array = reorderArray(array);
+//		reorderArray(array);
+		
 		
 		TreeSet<Integer> tree = new TreeSet<>();
 		
@@ -134,8 +136,8 @@ class TreeSetTest extends SetTest {
 		assertEquals(512, tree.width());
 		
 		
-//		tree.displayRotated();
-	
+		tree.displayRotated();
+
 	}
 
 
@@ -162,19 +164,22 @@ class TreeSetTest extends SetTest {
 //	private void reorderArray(Integer[] array) {
 //	balanceArray(array, 0, array.length - 1);
 //}
-
-
-//private void balanceArray(Integer[] array, int left, int right) {
 //
-//if (left <= right)  {
+//
+//private void balanceArray(Integer[] array, int left, int right) {
 //	int rootIndex = (left + right) / 2;
-//	int temp = array[rootIndex];
-//	array[rootIndex] = array[left];
-//	array[left] = temp;
 //	
-//	balanceArray(array, left + 1, rootIndex);
-//	balanceArray(array, rootIndex + 1, right);
-//}
+//	if (left <= right)  {
+//		
+//		int temp = array[rootIndex];
+//		array[rootIndex] = array[left];
+//		array[left] = temp;
+//	
+//		balanceArray(array, left + 1, rootIndex);
+//		balanceArray(array, rootIndex + 1, right);
+//	} else if (right != rootIndex) {
+//		right = rootIndex;
+//	}
 //}
 	
 	
