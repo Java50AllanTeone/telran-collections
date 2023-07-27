@@ -505,7 +505,11 @@ public class TreeSet<T> implements SortedSet<T>, Cloneable {
 	}
 
 	public void inverse() {
-		// TODO Auto-generated method stub
+		Node<T>[] arrayNodes = getSortedArrayNodes();
+		
+		
+		
+		root = balanceArray(arrayNodes, 0, size - 1, null);
 		
 	}
 	
