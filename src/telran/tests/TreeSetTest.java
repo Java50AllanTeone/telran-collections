@@ -134,7 +134,7 @@ class TreeSetTest extends SetTest {
 		assertEquals(512, tree.width());
 		
 		
-		tree.displayRotated();
+//		tree.displayRotated();
 	
 	}
 
@@ -189,6 +189,8 @@ class TreeSetTest extends SetTest {
 		assertArrayEquals(expected, treeSet.toArray(new Integer[0]));
 		
 		assertTrue(treeSet.contains(100));
+		
+//		treeSet.inverse();
 	}
 	
 	

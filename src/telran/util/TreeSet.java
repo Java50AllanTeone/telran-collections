@@ -1,5 +1,6 @@
 package telran.util;
 
+import java.util.Arrays;
 import java.util.Comparator;
 import java.util.Iterator;
 import java.util.NoSuchElementException;
@@ -26,6 +27,11 @@ public class TreeSet<T> implements SortedSet<T>, Cloneable {
 	
 	public TreeSet(Collection<T> collection) {
 		this();
+		addAll(collection);
+	}
+	
+	public TreeSet(Collection<T> collection, Comparator<T> comp) {
+		this.comp = comp;
 		addAll(collection);
 	}
 	
@@ -505,12 +511,9 @@ public class TreeSet<T> implements SortedSet<T>, Cloneable {
 	}
 
 	public void inverse() {
-		Node<T>[] arrayNodes = getSortedArrayNodes();
-		
-		
-		
-		root = balanceArray(arrayNodes, 0, size - 1, null);
-		
+		TreeSet<T> ts = new TreeSet<>(this, (Comparator<T>) Comparator.reverseOrder());
+		this.root = ts.root;
+		this.comp = ts.comp;
 	}
 	
 	
