@@ -1,7 +1,6 @@
 package telran.tests;
 
 import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Test;
 
 import telran.util.Collection;
 import telran.util.LinkedList;

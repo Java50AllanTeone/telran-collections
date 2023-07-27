@@ -10,7 +10,16 @@ public class TreeSet<T> implements SortedSet<T>, Cloneable {
 	Node<T> root;
 	int size;
 	Comparator<T> comp;
+	private int spacesPerLevel = 2;
 	
+	public int getSpacesPerLevel() {
+		return spacesPerLevel;
+	}
+
+	public void setSpacesPerLevel(int spacesPerLevel) {
+		this.spacesPerLevel = spacesPerLevel;
+	}
+
 	public TreeSet(Comparator<T> comp) {
 		this.comp = comp;
 	}
@@ -237,6 +246,11 @@ public class TreeSet<T> implements SortedSet<T>, Cloneable {
 		return node.parent;
 	}
 	
+	private Node<T> getCurrent(Node<T> current) {
+
+		return current.right != null ? getLeastFrom(current.right) : getGreaterParent(current);
+	}
+	
 	
 	private Node<T> getParentOrNode(T key) {
 		Node<T> current = root;
@@ -396,6 +410,129 @@ public class TreeSet<T> implements SortedSet<T>, Cloneable {
 		}
 		return next;
 	}
+	
+	
+	
+	
+	
+	
+	
+	public void displayRotated() {
+		displayRotated(root, 1);
+	}
+
+	private void displayRotated(Node<T> root, int level) {
+		if (root != null) {
+			displayRotated(root.right, level + 1);
+			displayRoot(root, level);
+			displayRotated(root.left, level + 1);
+		}
+		
+		
+	}
+
+	private void displayRoot(Node<T> root, int level) {
+		System.out.print(" ".repeat(level * spacesPerLevel));
+		System.out.println(root.obj);
+	}
+
+	public int width() {	
+		return width(root);
+	}
+
+	private int width(Node<T> root) {
+		int res = 0;
+		
+		if (root != null) {
+			if (root.left == null && root.right == null) {
+				res = 1;
+			} else {
+				res = width(root.left) + width(root.right);
+			}
+		}
+		
+		return res;
+	}
+
+	public int height() {
+		return height(root);
+	}
+
+	private int height(Node<T> root) {
+		int res = 0;
+		
+		if (root != null) {
+			int leftHeight = height(root.left);
+			int rightHeight = height(root.right);
+			res = Math.max(leftHeight, rightHeight) + 1;
+		}
+		return res;
+	}
+
+	public void balance() {
+		Node<T>[] arrayNodes = getSortedArrayNodes();
+		
+		root = balanceArray(arrayNodes, 0, size - 1, null);
+		
+	}
+
+	private Node<T> balanceArray(Node<T>[] arrayNodes, int left, int right, Node<T> parent) {
+		Node<T> root = null;
+		
+		if (left <= right) {
+			int rootIndex = (left + right) / 2;
+			root = arrayNodes[rootIndex];
+			root.parent = parent;
+			root.left = balanceArray(arrayNodes, left, rootIndex - 1, root);
+			root.right = balanceArray(arrayNodes, rootIndex + 1, right, root);
+		}
+		
+		
+		return root;
+	}
+
+	private Node<T>[] getSortedArrayNodes() {
+		Node<T>[] res = new Node[size];
+		
+		int index = 0;
+		Node<T> current = getLeastFrom(root);
+		
+		while (current != null) {
+			res[index++] = current;
+			current = getCurrent(current);
+		}
+		return res;
+	}
+
+	public void inverse() {
+		// TODO Auto-generated method stub
+		
+	}
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
 
 
 }
