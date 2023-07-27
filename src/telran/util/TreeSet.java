@@ -511,10 +511,14 @@ public class TreeSet<T> implements SortedSet<T>, Cloneable {
 	}
 
 	public void inverse() {
-		TreeSet<T> ts = new TreeSet<>(this, (Comparator<T>) Comparator.reverseOrder());
+		var compNew = this.comp == null ? (Comparator<T>) Comparator.reverseOrder() : this.comp.reversed();
+		TreeSet<T> ts = new TreeSet<>(this, compNew);
 		this.root = ts.root;
 		this.comp = ts.comp;
 	}
+	
+	
+
 	
 	
 	
