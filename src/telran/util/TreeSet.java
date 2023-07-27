@@ -517,7 +517,11 @@ public class TreeSet<T> implements SortedSet<T>, Cloneable {
 		this.comp = ts.comp;
 	}
 	
-	
+	public void invers() {
+		Node<T>[] arrayNodes = getSortedArrayNodes();
+		this.comp = this.comp == null ? (Comparator<T>) Comparator.reverseOrder() : this.comp.reversed();
+		root = balanceArray(arrayNodes, 0, size - 1, null);
+	}
 
 	
 	

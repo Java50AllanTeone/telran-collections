@@ -185,12 +185,10 @@ class TreeSetTest extends SetTest {
 	@Test
 	void inverseTest() {
 		Integer[] expected = {100, 30, 14, 12, 10, 8, -20};
-		treeSet.invers();
+		treeSet.inverse();
 		assertArrayEquals(expected, treeSet.toArray(new Integer[0]));
 		
 		assertTrue(treeSet.contains(100));
-		
-//		treeSet.inverse();
 	}
 	
 	
