@@ -7,9 +7,9 @@ import java.util.Objects;
 import java.util.function.Predicate;
 
 public class LinkedList<T> implements List<T>, Cloneable {
-	private Node<T> head;
-	private Node<T> tail;
-	private int size;
+	Node<T> head;
+	Node<T> tail;
+	int size;
 	
 	public LinkedList() {
 	}
@@ -18,7 +18,7 @@ public class LinkedList<T> implements List<T>, Cloneable {
 		addAll(collection);
 	}
 	
-	private static class Node<T> {
+	static class Node<T> {
 		T obj;
 		Node<T> next;
 		Node<T> prev;
@@ -237,11 +237,11 @@ public class LinkedList<T> implements List<T>, Cloneable {
 		return res;
 	}
 
-	private Node<T> getNode(int index) {
+	Node<T> getNode(int index) {
 		return index < size / 2 ? getNodeFromHead(index) : getNodeFromTail(index);
 	}
 
-	private Node<T> getNodeFromTail(int index) {
+	Node<T> getNodeFromTail(int index) {
 		Node<T> current = tail;
 		for (int i = size - 1; i > index; i--) {
 			current = current.prev;
@@ -249,7 +249,7 @@ public class LinkedList<T> implements List<T>, Cloneable {
 		return current;
 	}
 
-	private Node<T> getNodeFromHead(int index) {
+	Node<T> getNodeFromHead(int index) {
 		Node<T> current = head;
 		for (int i = 0; i < index; i++) {
 			current = current.next;
@@ -257,7 +257,7 @@ public class LinkedList<T> implements List<T>, Cloneable {
 		return current;
 	}
 	
-	private void addNode(int index, Node<T> node) {
+	void addNode(int index, Node<T> node) {
 		
 		if (index == size) {
 			addTail(node);
@@ -270,7 +270,7 @@ public class LinkedList<T> implements List<T>, Cloneable {
 	}
 
 
-	private void addMiddle(int index, Node<T> node) {
+	void addMiddle(int index, Node<T> node) {
 		Node<T> nextNode = getNode(index);
 		Node<T> prevNode = nextNode.prev;
 		prevNode.next = node;
@@ -280,14 +280,14 @@ public class LinkedList<T> implements List<T>, Cloneable {
 	}
 
 
-	private void addHead(Node<T> node) {
+	void addHead(Node<T> node) {
 		node.next = head;
 		head.prev = node;
 		head = node;	
 	}
 
 
-	private void addTail(Node<T> node) {
+	void addTail(Node<T> node) {
 		if (tail == null) {
 			head = tail = node;
 		} else {
@@ -298,18 +298,18 @@ public class LinkedList<T> implements List<T>, Cloneable {
 	}
 	
 	
-	private void removeMiddle(Node<T> node) {
+	void removeMiddle(Node<T> node) {
 		node.prev.next = node.next;
 		node.next.prev = node.prev;
 		node.next = node.prev = null;
 	}
 
-	private void removeTail(Node<T> node) {
+	void removeTail(Node<T> node) {
 		tail = node.prev;
 		node.prev.next = node.prev = null;
 	}
 
-	private void removeHead(Node<T> node) {		
+	void removeHead(Node<T> node) {		
 		if (node.next == null ) {
 			head = null;
 			tail = null;

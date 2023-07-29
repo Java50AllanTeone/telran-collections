@@ -125,7 +125,7 @@ class TreeSetTest extends SetTest {
 		}
 		
 //		array = reorderArray(array);
-//		reorderArray(array);
+		reorderArray(array);
 		
 		
 		TreeSet<Integer> tree = new TreeSet<>();
@@ -142,45 +142,45 @@ class TreeSetTest extends SetTest {
 
 
 
-	private Integer[] reorderArray(Integer[] array) {
-		Integer[] res = new Integer[array.length];
-		balanceArray(array, 0, array.length - 1, res, 0);
-		return res;
-	}
-	
-	private int balanceArray(Integer[] array, int left, int right, Integer[] newArr, int index) {
-		
-		if (left <= right)  {
-			int rootIndex = (left + right) / 2;
-			newArr[index++] = array[rootIndex];
-			index = balanceArray(array, left, rootIndex - 1, newArr, index);
-			index = balanceArray(array, rootIndex + 1, right, newArr, index);	
-		}	
-		return index;
-	}
+//	private Integer[] reorderArray(Integer[] array) {
+//		Integer[] res = new Integer[array.length];
+//		balanceArray(array, 0, array.length - 1, res, 0);
+//		return res;
+//	}
+//	
+//	private int balanceArray(Integer[] array, int left, int right, Integer[] newArr, int index) {
+//		
+//		if (left <= right)  {
+//			int rootIndex = (left + right) / 2;
+//			newArr[index++] = array[rootIndex];
+//			index = balanceArray(array, left, rootIndex - 1, newArr, index);
+//			index = balanceArray(array, rootIndex + 1, right, newArr, index);	
+//		}	
+//		return index;
+//	}
 	
 	
 	//v2
-//	private void reorderArray(Integer[] array) {
-//	balanceArray(array, 0, array.length - 1);
-//}
-//
-//
-//private void balanceArray(Integer[] array, int left, int right) {
-//	int rootIndex = (left + right) / 2;
-//	
-//	if (left <= right)  {
-//		
-//		int temp = array[rootIndex];
-//		array[rootIndex] = array[left];
-//		array[left] = temp;
-//	
-//		balanceArray(array, left + 1, rootIndex);
-//		balanceArray(array, rootIndex + 1, right);
-//	} else if (right != rootIndex) {
-//		right = rootIndex;
-//	}
-//}
+	private void reorderArray(Integer[] array) {
+	balanceArray(array, 0, array.length - 1);
+}
+
+
+private void balanceArray(Integer[] array, int left, int right) {
+	int rootIndex = (left + right) / 2;
+	
+	if (left <= right)  {
+		
+		int temp = array[rootIndex];
+		array[rootIndex] = array[left];
+		array[left] = temp;
+	
+		balanceArray(array, left + 1, rootIndex - 1);
+//		balanceArray(array, rootIndex, right);
+	} else if (right != array.length - 1) {
+		right = array.length - 1;
+	}
+}
 	
 	
 
