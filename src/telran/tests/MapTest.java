@@ -17,7 +17,6 @@ abstract class MapTest {
 	Collection<String> expValues;
 	Set<Map.Entry<Integer, String>> expEntries;
 	
-//	protected abstract Collection<Integer> getMap(Integer[] ar);
 	protected abstract void runCollectionTest(Collection<?> expected, Collection<?> actual);
 
 	@BeforeEach
