@@ -215,20 +215,10 @@ public class HashSet<T> implements Set<T>, Cloneable {
 		return setEqualsTo(obj);
 	}
 
-	//new array
 	@Override
 	public Object clone() {
 		return new HashSet<T>(this);
 	}
-	
-	
-//	old hashTable
-//	@Override
-//	public Object clone() {
-//		var target = new HashSet<T>();
-//		target.hashTable = this.hashTable;
-//		target.size = size();
-//		return target;
-//	}
+
 
 }

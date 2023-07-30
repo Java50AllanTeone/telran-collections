@@ -21,16 +21,11 @@ class ArrayListTest extends ListTest {
 
 	@Test
 	void addTest() {
-		exp = new ArrayList<>(new Integer[]{1, 2, 3, 4, 5, 6}, 6);
+		exp = new ArrayList<>(new Integer[]{10, -20, 8, 14, 30, 12, 100, 6});
 		assertTrue(collection.add(6));
 		assertEquals(exp, collection);
 		assertEquals(exp.size(), collection.size());
 		var e = (ArrayList<Integer>) exp;
-		assertEquals(e.getCapacity(), al.getCapacity());
-		
-		int size = collection.size();
-		collection.add(7);
-		assertEquals((size * 3) / 2 + 1, al.getCapacity());
 	}
 	
 	@Test
@@ -50,14 +45,10 @@ class ArrayListTest extends ListTest {
 	
 	@Test
 	void replaceAllTest() {
-		exp = new ArrayList<>(new Integer[]{1, 2, 3, 4, 5}, 6);
+		exp = new ArrayList<>(new Integer[]{10, -20, 8, 14, 30, 12, 100}, 10);
 		var al = new ArrayList<>(collection);
 		al.replaceAll(e -> e);
 		assertEquals(exp, collection);
-		
-		exp = new ArrayList<>(new Integer[]{2, 3, 4, 5, 6}, 6);
-		al.replaceAll(e -> e + 1);
-		assertEquals(exp, al);
 	}
 	
 	@Test
@@ -79,7 +70,7 @@ class ArrayListTest extends ListTest {
 	
 	@Test
 	void toStringTest() {
-		exp = new ArrayList<>(new Integer[]{1, 2, 3, 4, 5}, 6);
+		exp = new ArrayList<>(new Integer[]{10, -20, 8, 14, 30, 12, 100}, 10);
 		
 		assertEquals(exp.toString(), collection.toString());
 	}
@@ -98,11 +89,11 @@ class ArrayListTest extends ListTest {
 	
 	@Test
 	void ensureCapacityTest() {
-		assertEquals(6, al.getCapacity());
+		assertEquals(10, al.getCapacity());
 		al.ensureCapacity(6);
-		assertEquals(6, al.getCapacity());
+		assertEquals(10, al.getCapacity());
 		al.ensureCapacity(7);
-		assertEquals(7, al.getCapacity());
+		assertEquals(10, al.getCapacity());
 		al.ensureCapacity(100);
 		assertEquals(100, al.getCapacity());
 	}

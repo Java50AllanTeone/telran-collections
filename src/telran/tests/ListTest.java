@@ -58,42 +58,43 @@ abstract class ListTest extends CollectionTest {
 
 	@Test
 	void getTest() {
+		Integer [] arr = {10, -20, 8, 14, 30, 12, 100};
 		assertThrowsExactly(IndexOutOfBoundsException.class, () -> list.get(100));
 		assertThrowsExactly(IndexOutOfBoundsException.class, () -> list.get(-1));
 		
-		assertEquals(1, list.get(0));
-		assertEquals(5, list.get(4));
+		assertEquals(10, list.get(0));
+		assertEquals(100, list.get(6));
 	}
 	
 	@Test
 	void setTest() {
-		Integer[] arr = new Integer[]{1, 2, 3, 4, 5};
+		Integer[] arr = new Integer[]{10, -20, 8, 14, 30, 12, 100};
 		assertArrayEquals(arr, list.toArray());
 		
-		list.set(0, 1);
+		list.set(0, 10);
 		assertArrayEquals(arr, list.toArray());
 		
 		list.set(0, 0);
-		arr = new Integer[]{0, 2, 3, 4, 5};
+		arr = new Integer[]{0, -20, 8, 14, 30, 12, 100};
 		assertArrayEquals(arr, list.toArray());
 	}
 	
 
 	@Test
 	void removeTest() {
-		Integer[] arr = new Integer[]{1, 2, 3, 4, 5};
+		Integer[] arr = new Integer[]{10, -20, 8, 14, 30, 12, 100};
 		assertArrayEquals(arr, list.toArray());
 		
 		list.remove(0);
-		arr = new Integer[]{2, 3, 4, 5};
+		arr = new Integer[]{-20, 8, 14, 30, 12, 100};
 		assertArrayEquals(arr, list.toArray());
 		
 		list.remove(3);
-		arr = new Integer[] {2, 3, 4};
+		arr = new Integer[]{-20, 8, 14, 12, 100};
 		assertArrayEquals(arr, list.toArray());
 		
 		list.remove(1);
-		arr = new Integer[] {2, 4};
+		arr = new Integer[]{-20, 14, 12, 100};
 		assertArrayEquals(arr, list.toArray());
 	}
 	

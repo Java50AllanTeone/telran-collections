@@ -5,18 +5,31 @@ import java.util.Iterator;
 public abstract class AbstractMap<K, V> implements Map<K, V> {
 	protected Set<Entry<K, V>> set;
 
+	@SuppressWarnings("unchecked")
 	@Override
 	public V get(Object key) {
-		@SuppressWarnings("unchecked")
 		Entry<K, V> pattern = new Entry<>((K)key, null);
 		Entry<K, V> entry = set.get(pattern);
 		return entry == null ? null : entry.getValue();
+	}
+	
+	
+	@SuppressWarnings("unchecked")
+	@Override
+	public V remove(Object key) {
+		Entry<K, V> pattern = new Entry<>((K)key, null);
+		Entry<K, V> entry = set.get(pattern);
+		
+		if (entry != null) {
+			set.remove(entry);
+		}
+		return entry.getValue();
 	}
 
 	@Override
 	public V put(K key, V value) {
 		Entry<K, V> newEntry = new Entry<>(key, value);
-		Entry<K, V> entry = set.get(key);
+		Entry<K, V> entry = set.get(newEntry);
 		V res = null;
 		
 		if (entry != null) {
@@ -25,9 +38,10 @@ public abstract class AbstractMap<K, V> implements Map<K, V> {
 		} else {
 			set.add(newEntry);
 		}
-		return null;
+		return res;
 	}
 
+	@SuppressWarnings("unchecked")
 	@Override
 	public boolean containsKey(Object key) {
 		Entry<K, V> pattern = new Entry<>((K)key, null);
@@ -48,8 +62,9 @@ public abstract class AbstractMap<K, V> implements Map<K, V> {
 		while (it.hasNext() && !res) {
 			Entry<K, V> entry = it.next();
 			
-			if (entry.getValue().equals(value));
-			res = true;
+			if (entry.getValue().equals(value)) {
+				res = true;
+			}
 		}
 		return res;
 	}

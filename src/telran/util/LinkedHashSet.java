@@ -3,37 +3,55 @@ package telran.util;
 import java.util.Iterator;
 
 public class LinkedHashSet<T> implements Set<T> {
-	HashMap<T, LinkedList.Node<T>> map = new HashMap<>();
-	LinkedList<T> list = new LinkedList<>();
+	public HashMap<T, LinkedList.Node<T>> map = new HashMap<>();
+	public LinkedList<T> list = new LinkedList<>();
 
 	@Override
 	public boolean add(T obj) {
-		// TODO Auto-generated method stub
-		return false;
+		boolean res = false;
+		
+		if (!contains(obj)) {
+			var node = new LinkedList.Node<T>(obj);
+			list.addNode(list.size(), node);
+			map.put(obj, node);
+			res = true;
+		}
+		return res;
 	}
 
 	@Override
 	public boolean remove(Object pattern) {
-		// TODO Auto-generated method stub
-		return false;
+		boolean res = false;
+		
+		if (contains(pattern)) {
+			map.remove(pattern);
+			list.remove(pattern);
+			res = true;
+		}
+		return res;
+	}
+	
+	@Override
+	public T get(Object pattern) {
+		var res = map.get(pattern);
+		return res == null ? null : res.obj;
 	}
 
 	@Override
 	public boolean contains(Object o) {
-		// TODO Auto-generated method stub
-		return false;
+		
+		return map.containsKey(o);
 	}
 
 	@Override
 	public int size() {
-		// TODO Auto-generated method stub
-		return 0;
+		return list.size();
 	}
 
 	@Override
 	public Object[] toArray() {
-		// TODO Auto-generated method stub
-		return null;
+
+		return list.toArray();
 	}
 
 	@Override
@@ -41,11 +59,7 @@ public class LinkedHashSet<T> implements Set<T> {
 		return list.iterator();
 	}
 
-	@Override
-	public T get(Object pattern) {
-		// TODO Auto-generated method stub
-		return null;
-	}
+
 	
 	
 	@Override

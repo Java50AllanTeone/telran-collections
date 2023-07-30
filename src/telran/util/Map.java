@@ -12,6 +12,7 @@ public interface Map<K, V> {
 			return Objects.hash(key);
 		}
 
+		@SuppressWarnings("rawtypes")
 		@Override
 		public boolean equals(Object obj) {
 			if (this == obj)
@@ -52,6 +53,7 @@ public interface Map<K, V> {
 
 
 	V get(Object key);
+	V remove(Object key);
 
 	default V getOrDefault(Object key, V defaultValue) {
 		V res = defaultValue;
