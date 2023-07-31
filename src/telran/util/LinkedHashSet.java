@@ -21,15 +21,33 @@ public class LinkedHashSet<T> implements Set<T> {
 
 	@Override
 	public boolean remove(Object pattern) {
-		boolean res = false;
+		var node = map.get(pattern);
 		
-		if (contains(pattern)) {
-			map.remove(pattern);
-			list.remove(pattern);
-			res = true;
+		if (node == null)
+			return false;
+				
+		map.remove(pattern);
+		
+		if (node.prev != null) {
+			node.prev.next = node.next;
 		}
-		return res;
+		if (node.next != null) {
+			node.next.prev = node.prev;
+		}
+		return true;
 	}
+	
+//	@Override
+//	public boolean remove(Object pattern) {
+//		boolean res = false;
+//		
+//		if (contains(pattern)) {	
+//			map.remove(pattern);
+//			list.remove(pattern);
+//			res = true;
+//		}
+//		return res;
+//	}
 	
 	@Override
 	public T get(Object pattern) {
