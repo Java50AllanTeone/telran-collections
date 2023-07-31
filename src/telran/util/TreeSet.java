@@ -369,79 +369,47 @@ public class TreeSet<T> implements SortedSet<T>, Cloneable {
 	
 	
 	class TreeIterator implements Iterator<T> {
-		Node<T> current;
+		int index = 0 ;
+		Node<T> next;
 		Node<T> prev;
-		boolean flNext = false;
-
-		TreeIterator() {
-			current = root == null ? null : getLeastFrom(root);
-		}
-
+		boolean wasNext = false;
+		
 		@Override
 		public boolean hasNext() {
-
-			return current != null;
+			return index < size;
 		}
-		
-
 
 		@Override
 		public T next() {
-			if (!hasNext()) {
+			if (!hasNext()) {	
 				throw new NoSuchElementException();
+			}	
+			
+			if (next == null) {
+				next = getLeastFrom(root);
+			} else if (next == prev) {
+				next = getNext(prev);
 			}
-			T res = current.obj;
-			prev = current;
-			current = getCurrent(current);
-			flNext = true;
-			return res;
+			
+			prev = next;
+			wasNext = true;
+			index++;
+			return next.obj;
 		}
-
+		
+		
 		@Override
 		public void remove() {
-			if (!flNext) {
-				throw new IllegalStateException();
-			}
-			removeNode(prev);
-			flNext = false;
+			if (!wasNext) {
+			throw new IllegalStateException();
+			}	
+			next = getNext(prev);
+			
+			TreeSet.this.remove(prev);
+			wasNext = false;
+			size--;
+			index--;
 		}
-	}
-	
-	private void removeNode(Node<T> node) {
-		if (node.left != null && node.right != null) {
-			removeJunction(node);
-		} else {
-			removeNonJunction(node);
-		}
-		size--;
-
-	}
-	
-	private void removeJunction(Node<T> node) {
-		Node<T> substitute = getGreatestFrom(node.left);
-		node.obj = substitute.obj;
-		removeNonJunction(substitute);
-
-	}
-
-	private void removeNonJunction(Node<T> node) {
-		Node<T> parent = node.parent;
-		Node<T> child = node.left == null ? node.right : node.left;
-		if (parent == null) {
-			root = child;
-		} else {
-			if (node == parent.left) {
-				parent.left = child;
-			} else {
-				parent.right = child;
-			}
-
-		}
-		if (child != null) {
-			child.parent = parent;
-		}
-		node.setNulls();
-		
 	}
 	
 	
@@ -467,16 +435,6 @@ public class TreeSet<T> implements SortedSet<T>, Cloneable {
 	@Override
 	public SortedSet<T> tailSetCopy(T fromElement, boolean inclusive) {
 		return subSetCopy(fromElement, inclusive, last(), true);
-	}
-	
-	private Node<T> getParent(T key) {
-		Node<T> node = getParentOrNode(key);
-		Node<T> parent = null;
-		
-		if (comp.compare(key, node.obj) != 0) {
-			parent = node;
-		}
-		return parent;
 	}
 		
 
@@ -521,8 +479,6 @@ public class TreeSet<T> implements SortedSet<T>, Cloneable {
 		}
 		return next;
 	}
-	
-	
 	
 	
 	
