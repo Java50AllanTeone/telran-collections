@@ -57,12 +57,6 @@ public class TreeSet<T> implements SortedSet<T>, Cloneable {
 			node.obj = temp;
 		}
 		
-		public void setNulls() {
-			obj = null;
-			parent = left = right = null;
-			
-		}
-		
 		private boolean isFullNode() {
 			return this.left != null && this.right != null;
 		}
@@ -84,35 +78,6 @@ public class TreeSet<T> implements SortedSet<T>, Cloneable {
 		}
 		return res;
 	}
-
-//	@Override
-//	public boolean add(T obj) {
-//		Node<T> node = new Node<T>(obj);
-//		boolean res = false;
-//		
-//		if (root == null) {
-//			res = true;
-//			root = node;
-//		} else {
-//			Node<T> parent = getParent(obj);
-//			
-//			if (parent != null) {
-//				res = true;
-//				node.parent = parent;
-//				int compRes = comp.compare(obj, parent.obj);
-//				
-//				if (compRes > 0) {
-//					parent.right = node;
-//				} else {
-//					parent.left = node;
-//				}
-//			}
-//		}
-//		if (res) {
-//			size++;
-//		}
-//		return res;
-//	}
 	
 	@Override
 	public boolean add(T obj) {
@@ -201,27 +166,6 @@ public class TreeSet<T> implements SortedSet<T>, Cloneable {
 		}	
 		return res;
 	}
-	
-	
-//	private Node<T> checkNode(Node<T> root, T obj) {
-//		Node<T> res = null;
-//		
-//		if (root != null) {
-//			if (comp.compare(root.obj, obj) == 0) {
-//				res = root;
-//			}
-//			
-//			if (res == null) {
-//				res = checkNode(root.left, obj);
-//			}
-//			
-//			if (res == null) {
-//				res = checkNode(root.right, obj);
-//			}
-//		}	
-//		return res;
-//	}
-	
 
 
 	@Override
@@ -577,6 +521,15 @@ public class TreeSet<T> implements SortedSet<T>, Cloneable {
 		this.root = ts.root;
 		this.comp = ts.comp;
 	}
+	
+	
+	
+
+
+	
+	
+	
+	
 
 	
 	
