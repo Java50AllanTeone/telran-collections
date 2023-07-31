@@ -55,7 +55,13 @@ public class TreeSet<T> implements SortedSet<T>, Cloneable {
 			var temp = this.obj;
 			this.obj = node.obj;
 			node.obj = temp;
-	}
+		}
+		
+		public void setNulls() {
+			obj = null;
+			parent = left = right = null;
+			
+		}
 		
 		private boolean isFullNode() {
 			return this.left != null && this.right != null;
@@ -79,33 +85,62 @@ public class TreeSet<T> implements SortedSet<T>, Cloneable {
 		return res;
 	}
 
+//	@Override
+//	public boolean add(T obj) {
+//		Node<T> node = new Node<T>(obj);
+//		boolean res = false;
+//		
+//		if (root == null) {
+//			res = true;
+//			root = node;
+//		} else {
+//			Node<T> parent = getParent(obj);
+//			
+//			if (parent != null) {
+//				res = true;
+//				node.parent = parent;
+//				int compRes = comp.compare(obj, parent.obj);
+//				
+//				if (compRes > 0) {
+//					parent.right = node;
+//				} else {
+//					parent.left = node;
+//				}
+//			}
+//		}
+//		if (res) {
+//			size++;
+//		}
+//		return res;
+//	}
+	
 	@Override
 	public boolean add(T obj) {
-		Node<T> node = new Node<T>(obj);
-		boolean res = false;
-		
-		if (root == null) {
-			res = true;
-			root = node;
-		} else {
-			Node<T> parent = getParent(obj);
+		int oldSize = size();
+		root = addNode(root, obj);
+
+		return size() > oldSize;
+	}
+	
+	
+	private Node<T> addNode(Node<T> root, T obj) {
+		if (root != null) {
+			int compRes = comp.compare(root.obj, obj);
 			
-			if (parent != null) {
-				res = true;
-				node.parent = parent;
-				int compRes = comp.compare(obj, parent.obj);
-				
-				if (compRes > 0) {
-					parent.right = node;
-				} else {
-					parent.left = node;
-				}
+			if (compRes > 0) {
+				var left = addNode(root.left, obj);
+				root.left = left;
+				left.parent = root;
 			}
+			if (compRes < 0) {
+				var right = addNode(root.right, obj);
+				root.right = right;
+				right.parent = root;
+			} 
+			return root;
 		}
-		if (res) {
-			size++;
-		}
-		return res;
+		size++;
+		return new Node<>(obj);
 	}
 
 	@Override
@@ -147,9 +182,47 @@ public class TreeSet<T> implements SortedSet<T>, Cloneable {
 
 	@Override
 	public boolean contains(Object pattern) {
-		
-		return getNode((T)pattern) != null;
+		return checkNode(root, (T)pattern);
 	}
+	
+	
+	private boolean checkNode(Node<T> root, T obj) {
+		boolean res = false;
+		
+		if (root != null) {
+			res = comp.compare(root.obj, obj) == 0;
+			
+			if (!res) {
+				res = checkNode(root.left, obj);
+			}
+			if (!res) {
+				res = checkNode(root.right, obj);
+			}	
+		}	
+		return res;
+	}
+	
+	
+//	private Node<T> checkNode(Node<T> root, T obj) {
+//		Node<T> res = null;
+//		
+//		if (root != null) {
+//			if (comp.compare(root.obj, obj) == 0) {
+//				res = root;
+//			}
+//			
+//			if (res == null) {
+//				res = checkNode(root.left, obj);
+//			}
+//			
+//			if (res == null) {
+//				res = checkNode(root.right, obj);
+//			}
+//		}	
+//		return res;
+//	}
+	
+
 
 	@Override
 	public int size() {
@@ -269,17 +342,6 @@ public class TreeSet<T> implements SortedSet<T>, Cloneable {
 		return current == null ? parent : current;
 	}
 	
-	
-	private Node<T> getParent(T key) {
-		Node<T> node = getParentOrNode(key);
-		Node<T> parent = null;
-		
-		if (comp.compare(key, node.obj) != 0) {
-			parent = node;
-		}
-		return parent;
-	}
-	
 	private Node<T> getNode(T key) {
 		Node<T> node = getParentOrNode(key);
 		Node<T> res = null;
@@ -307,48 +369,82 @@ public class TreeSet<T> implements SortedSet<T>, Cloneable {
 	
 	
 	class TreeIterator implements Iterator<T> {
-		int index = 0 ;
-		Node<T> next;
+		Node<T> current;
 		Node<T> prev;
-		boolean wasNext = false;
-		
-		@Override
-		public boolean hasNext() {
-			return index < size;
+		boolean flNext = false;
+
+		TreeIterator() {
+			current = root == null ? null : getLeastFrom(root);
 		}
 
 		@Override
-		public T next() {
-			if (!hasNext()) {	
-				throw new NoSuchElementException();
-			}	
-			
-			if (next == null) {
-				next = getLeastFrom(root);
-			} else if (next == prev) {
-				next = getNext(prev);
-			}
-			
-			prev = next;
-			wasNext = true;
-			index++;
-			return next.obj;
+		public boolean hasNext() {
+
+			return current != null;
 		}
 		
-		
+
+
+		@Override
+		public T next() {
+			if (!hasNext()) {
+				throw new NoSuchElementException();
+			}
+			T res = current.obj;
+			prev = current;
+			current = getCurrent(current);
+			flNext = true;
+			return res;
+		}
+
 		@Override
 		public void remove() {
-			if (!wasNext) {
-			throw new IllegalStateException();
-			}	
-			next = getNext(prev);
-			
-			TreeSet.this.remove(prev);
-			wasNext = false;
-			size--;
-			index--;
+			if (!flNext) {
+				throw new IllegalStateException();
+			}
+			removeNode(prev);
+			flNext = false;
 		}
 	}
+	
+	private void removeNode(Node<T> node) {
+		if (node.left != null && node.right != null) {
+			removeJunction(node);
+		} else {
+			removeNonJunction(node);
+		}
+		size--;
+
+	}
+	
+	private void removeJunction(Node<T> node) {
+		Node<T> substitute = getGreatestFrom(node.left);
+		node.obj = substitute.obj;
+		removeNonJunction(substitute);
+
+	}
+
+	private void removeNonJunction(Node<T> node) {
+		Node<T> parent = node.parent;
+		Node<T> child = node.left == null ? node.right : node.left;
+		if (parent == null) {
+			root = child;
+		} else {
+			if (node == parent.left) {
+				parent.left = child;
+			} else {
+				parent.right = child;
+			}
+
+		}
+		if (child != null) {
+			child.parent = parent;
+		}
+		node.setNulls();
+		
+	}
+	
+	
 	
 	@Override
 	public boolean equals(Object obj) {
@@ -371,6 +467,16 @@ public class TreeSet<T> implements SortedSet<T>, Cloneable {
 	@Override
 	public SortedSet<T> tailSetCopy(T fromElement, boolean inclusive) {
 		return subSetCopy(fromElement, inclusive, last(), true);
+	}
+	
+	private Node<T> getParent(T key) {
+		Node<T> node = getParentOrNode(key);
+		Node<T> parent = null;
+		
+		if (comp.compare(key, node.obj) != 0) {
+			parent = node;
+		}
+		return parent;
 	}
 		
 

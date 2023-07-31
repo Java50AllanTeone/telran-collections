@@ -14,7 +14,7 @@ public abstract class SetTest extends CollectionTest {
 	@Test
 	void addTest() {
 		assertFalse(collection.add(arr[0]));
-		runArrayTest(arr, collection.toArray(new Integer[0]));
+		runArrayTest(arr, collection.toArray());
 	}
 	
 	@Test
