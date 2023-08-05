@@ -18,14 +18,18 @@ public class ColoredBinaryTree {
     String maxColor = "";
 
     public int longestChain(TreeNode root) {
-        if (root == null) {
-            return 0;
+        if (root != null) {
+//            return 0;
+        	longestChain(root.left);
+        	getChain(root);
+        	longestChain(root.right);
         }
         
 //        dfs(root, root.color, 0);
         
         return maxLength;
     }
+   
 
 //    private void dfs(TreeNode node, String parentColor, int length) {
 //        if (node == null) {
