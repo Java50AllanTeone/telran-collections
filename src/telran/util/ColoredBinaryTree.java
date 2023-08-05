@@ -49,13 +49,13 @@ public class ColoredBinaryTree {
     
     
     
-    private void find(TreeNode node) {
+    private void getChain(TreeNode node) {
         if (node == null) {
             return;
         }
         
-        int left = height(node.left, node.color);
-        int right = height(node.right, node.color);
+        int left = getChainSide(node.left, node.color);
+        int right = getChainSide(node.right, node.color);
         int length = left + right + 1;
 
         if (length > maxLength) {
@@ -64,12 +64,12 @@ public class ColoredBinaryTree {
         }
     }
     
-	private int height(TreeNode root, String parentColor) {
+	private int getChainSide(TreeNode root, String parentColor) {
 		int res = 0;
 		
 		if (root != null && root.color.equals(parentColor)) {
-			int leftHeight = height(root.left, parentColor);
-			int rightHeight = height(root.right, parentColor);
+			int leftHeight = getChainSide(root.left, parentColor);
+			int rightHeight = getChainSide(root.right, parentColor);
 			res = Math.max(leftHeight, rightHeight) + 1;
 		}
 		return res;
