@@ -1,7 +1,7 @@
 package telran.util;
 
-import java.util.List;
-import java.util.ArrayList;
+import java.util.Set;
+import java.util.HashSet;
 
 
 class TreeNode {
@@ -14,6 +14,13 @@ class TreeNode {
         this.val = val;
         this.color = color;
     }
+
+	@Override
+	public String toString() {
+		return color;
+	}
+    
+    
 }
 
 public class ColoredBinaryTree {
@@ -29,33 +36,65 @@ public class ColoredBinaryTree {
         return res.length;
     }
     
-    
-    private void getChain(TreeNode node) {
+    @SuppressWarnings("rawtypes")
+	private void getChain(TreeNode node) {
         if (node == null) {
             return;
         }
         
-        int left = getChainSide(node.left, node.color);
-        int right = getChainSide(node.right, node.color);
-        int length = left + right + 1;
+        Set left = getChainSide(node.left, node.color, res.set);
+        Set right = getChainSide(node.right, node.color, res.set);
+        
+        int length = left.size() + right.size() + 1;
 
         if (length > res.length) {
         	res.length = length;
             res.color = node.color;
         }
-        
-
     }
     
-	private int getChainSide(TreeNode root, String parentColor) {
-		int res = 0;
+    
+//    private void getChain(TreeNode node) {
+//        if (node == null) {
+//            return;
+//        }
+//        
+//        int left = getChainSide(node.left, node.color);
+//        int right = getChainSide(node.right, node.color);
+//        int length = left + right + 1;
+//
+//        if (length > res.length) {
+//        	res.length = length;
+//            res.color = node.color;
+//        }
+//    }
+    
+//	private int getChainSide(TreeNode root, String parentColor) {
+//		int res = 0;
+//		
+//		if (root != null && root.color.equals(parentColor)) {
+//			int leftHeight = getChainSide(root.left, parentColor);
+//			int rightHeight = getChainSide(root.right, parentColor);
+//			res = Math.max(leftHeight, rightHeight) + 1;
+//		}
+//		return res;
+//	}
+    
+    
+	@SuppressWarnings("unchecked")
+	private Set getChainSide(TreeNode root, String parentColor, Set set) {
+		Set res = new HashSet<>();
 		
 		if (root != null && root.color.equals(parentColor)) {
-			int leftHeight = getChainSide(root.left, parentColor);
-			int rightHeight = getChainSide(root.right, parentColor);
-			res = Math.max(leftHeight, rightHeight) + 1;
+			Set left = getChainSide(root.left, parentColor, new HashSet<>());
+			Set right = getChainSide(root.right, parentColor, new HashSet<>());
+		
+			res = left.size() > right.size() ? left : right;
+			set.addAll(res);
+			set.add(root);
+			
 		}
-		return res;
+		return set;
 	}
 
     public static void main(String[] args) {
@@ -88,7 +127,7 @@ public class ColoredBinaryTree {
 
         System.out.println("Longest chain length: " + longestChainLength);
         System.out.println("Longest chain color: " + longestChainColor);
-        System.out.println(tree.res.list.toString());
+        System.out.println(tree.res.set.toString());
     }
     
   
@@ -117,6 +156,6 @@ public class ColoredBinaryTree {
 	class MaxColorPathInfo {
 		int length;
 		String color;
-		List<TreeNode> list = new ArrayList<>();
+		Set<TreeNode> set = new HashSet<>();
 	}
 }
