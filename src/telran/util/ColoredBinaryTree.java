@@ -2,6 +2,7 @@ package telran.util;
 
 import java.util.Set;
 import java.util.HashSet;
+import java.util.Random;
 
 class TreeNode {
 	int val;
@@ -73,29 +74,10 @@ public class ColoredBinaryTree {
 
 
 	public static void main(String[] args) {
-        TreeNode root = new TreeNode(1, "Blue");
-        root.left = new TreeNode(2, "Red");
-        root.right = new TreeNode(3, "Blue");
-        root.left.left = new TreeNode(4, "Red");
-        root.left.right = new TreeNode(5, "Red");
-        root.right.right = new TreeNode(6, "Blue");
-        root.left.right.left = new TreeNode(7, "Red");
-        root.left.right.left.right = new TreeNode(8, "Red");
-        root.right.right.right = new TreeNode(10, "Blue");
-        root.right.right.right.right = new TreeNode(12, "Blue");
-
-//		TreeNode root = new TreeNode(20, "Green");
-//		root.left = new TreeNode(15, "Yellow");
-//		root.right = new TreeNode(35, "Blue");
-//		root.right.right = new TreeNode(79, "Blue");
-//		root.left.left = new TreeNode(6, "Yellow");
-//		root.left.right = new TreeNode(18, "Blue");
-//		root.left.left.right = new TreeNode(10, "Yellow");
-//		root.left.left.left = new TreeNode(5, "Blue");
-
+		ColoredBinaryTree ct = new ColoredBinaryTree();
+		TreeNode root = ct.fillRandom(new TreeNode(0, null), 6, new Random());
 		displayRotated(root, 1);
 
-		ColoredBinaryTree ct = new ColoredBinaryTree();
 		int resChainLength = ct.longestPath(root);
 		String resChainColor = ct.result.color;
 
@@ -104,8 +86,6 @@ public class ColoredBinaryTree {
 		System.out.println(ct.result.nodes.toString());
 	}
 
-	
-	
 	
 	
 	private static void displayRotated(TreeNode root, int level) {
@@ -122,30 +102,21 @@ public class ColoredBinaryTree {
 	}
 	
 	
-//  private void getChain(TreeNode node) {
-//  if (node == null) {
-//      return;
-//  }
-//  
-//  int left = getChainSide(node.left, node.color);
-//  int right = getChainSide(node.right, node.color);
-//  int length = left + right + 1;
-//
-//  if (length > res.length) {
-//  	res.length = length;
-//      res.color = node.color;
-//  }
-//}
+	
+	private TreeNode fillRandom(TreeNode root, int depth, Random random) {
+		if (depth != 0) {
+			root = new TreeNode(random.nextInt(3000), getColor());
+	        root.left = fillRandom(root.left, depth - 1, random);
+	        root.right = fillRandom(root.right, depth - 1, random);
+            return root;
+        }
+        return null;
+	}
 
-//private int getChainSide(TreeNode root, String parentColor) {
-//	int res = 0;
-//	
-//	if (root != null && root.color.equals(parentColor)) {
-//		int leftHeight = getChainSide(root.left, parentColor);
-//		int rightHeight = getChainSide(root.right, parentColor);
-//		res = Math.max(leftHeight, rightHeight) + 1;
-//	}
-//	return res;
-//}
+	private String getColor() {
+		Random random = new Random();
+        String[] colors = {"Red", "Blue", "Green"};
+        return colors[random.nextInt(colors.length)];
+	}
 
 }
