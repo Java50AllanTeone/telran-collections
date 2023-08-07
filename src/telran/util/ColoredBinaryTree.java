@@ -103,7 +103,6 @@ public class ColoredBinaryTree {
 		System.out.println("Length: " + resChainLength);
 		System.out.println("Color: " + resChainColor);
 		System.out.println(ct.result.nodes.toString());
-//		System.out.println(ct.toString());
 	}
 
 	
